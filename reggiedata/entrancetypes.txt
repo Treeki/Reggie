@@ -1,0 +1,30 @@
+Normal
+Normal?
+Door Exit
+Pipe Facing Up
+Pipe Facing Down
+Pipe Facing Left
+Pipe Facing Right
+Falling (Fast)
+Ground Pound
+Sliding
+Swimming
+Normal (Mispositioned)
+Normal (Mispositioned)
+Normal (Mispositioned)
+Unknown
+Unknown
+Mini Pipe Facing Up
+Mini Pipe Facing Down
+Mini Pipe Facing Left
+Mini Pipe Facing Right
+Jumping (Facing Right)
+Vine Entrance
+Pipe Facing Towards Screen
+Boss Entrance (Standing)
+Jumping (Facing Left)
+Boss Entrance (Jumping Right)
+Boss Entrance (Falling Right)
+Door Entrance
+Unknown (Crash)
+Unknown (Freeze)

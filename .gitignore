@@ -1,0 +1,6 @@
+*.pyc
+build
+distrib
+dist
+Microsoft.VC90.CRT
+upx.exe

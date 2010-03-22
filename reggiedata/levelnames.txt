@@ -1,0 +1,166 @@
+-World 1
+Peach's Castle|01-41
+World 1-1|01-01
+World 1-2|01-02
+World 1-3|01-03
+Tower|01-22
+World 1-4|01-04
+World 1-5|01-05
+World 1-6|01-06
+Castle|01-24
+Toad House 1|01-26
+Toad House 2|01-27
+Toad House 3|01-28
+Toad House 4|01-29
+Goomba Ambush 1|01-33
+Goomba Ambush 2|01-34
+Goomba Ambush 3|01-35
+Warp Cannon|01-36
+Title Screen|01-40
+Staff Roll|01-42
+
+-World 2
+World 2-1|02-01
+World 2-2|02-02
+World 2-3|02-03
+Tower|02-22
+World 2-4|02-04
+World 2-5|02-05
+World 2-6|02-06
+Castle|02-24
+Toad House 1|02-26
+Toad House 2|02-27
+Toad House 3|02-28
+Sand Trap 1|02-33
+Sand Trap 2|02-34
+Sand Trap 3|02-35
+Warp Cannon|02-36
+
+-World 3
+World 3-1|03-01
+World 3-2|03-02
+World 3-3|03-03
+Ghost House|03-21
+Tower|03-22
+World 3-4|03-04
+World 3-5|03-05
+Castle|03-24
+Toad House 1|03-26
+Toad House 2|03-27
+Toad House 3|03-28
+Toad House 4|03-29
+Ice Bros Ambush 1|03-33
+Ice Bros Ambush 2|03-34
+Ice Bros Ambush 3|03-35
+Warp Cannon|03-36
+
+-World 4
+World 4-1|04-01
+World 4-2|04-02
+World 4-3|04-03
+Tower|04-22
+World 4-4|04-04
+Ghost House|04-21
+World 4-5|04-05
+Castle|04-24
+Doomship|04-38
+Toad House 1|04-26
+Toad House 2|04-27
+Toad House 3|04-28
+Toad House 4|04-29
+Cheep Cheep Ambush 1|04-33
+Cheep Cheep Ambush 2|04-34
+Cheep Cheep Ambush 3|04-35
+Warp Cannon|04-36
+
+-World 5
+World 5-1|05-01
+World 5-2|05-02
+World 5-3|05-03
+Tower|05-22
+World 5-4|05-04
+Ghost House|05-21
+World 5-5|05-05
+Castle|05-24
+Toad House 1|05-26
+Toad House 2|05-27
+Toad House 3|05-28
+Toad House 4|05-29
+Piranha Ambush 1|05-33
+Piranha Ambush 2|05-34
+Piranha Ambush 3|05-35
+Warp Cannon|05-36
+
+-World 6
+World 6-1|06-01
+World 6-2|06-02
+World 6-3|06-03
+World 6-4|06-04
+Tower|06-22
+World 6-5|06-05
+World 6-6|06-06
+Castle|06-24
+Doomship|06-38
+Toad House 1|06-26
+Toad House 2|06-27
+Toad House 3|06-28
+Bullet Ambush 1|06-33
+Bullet Ambush 2|06-34
+Bullet Ambush 3|06-35
+Warp Cannon|06-36
+
+-World 7
+World 7-1|07-01
+World 7-2|07-02
+World 7-3|07-03
+Tower|07-22
+Ghost House|07-21
+World 7-4|07-04
+World 7-5|07-05
+World 7-6|07-06
+Castle|07-24
+Toad House 1|07-26
+Toad House 2|07-27
+Toad House 3|07-28
+Toad House 4|07-29
+Lakitu Ambush 1|07-33
+Lakitu Ambush 2|07-34
+Lakitu Ambush 3|07-35
+
+-World 8
+World 8-1|08-01
+World 8-2|08-02
+World 8-3|08-03
+Tower|08-22
+World 8-4|08-04
+World 8-5|08-05
+World 8-6|08-06
+World 8-7|08-07
+Doomship|08-38
+Castle|08-24
+Toad House 1|08-26
+Toad House 2|08-27
+Toad House 3|08-28
+Podoboo Ambush 1|08-33
+Podoboo Ambush 2|08-34
+Podoboo Ambush 3|08-35
+
+-World 9
+World 9-1|09-01
+World 9-2|09-02
+World 9-3|09-03
+World 9-4|09-04
+World 9-5|09-05
+World 9-6|09-06
+World 9-7|09-07
+World 9-8|09-08
+Toad House 1|09-26
+Toad House 2|09-27
+Toad House 3|09-28
+
+-Coin Battle Courses
+Coin Battle 1|01-20
+Coin Battle 2|02-20
+Coin Battle 3|03-20
+Coin Battle 4|04-20
+Coin Battle 5|05-20
