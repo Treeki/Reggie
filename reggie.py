@@ -1411,7 +1411,10 @@ class LevelUnit():
         getblock = struct.Struct('>II')
         for i in xrange(14):
             data = getblock.unpack_from(course, i*8)
-            self.blocks[i] = course[data[0]:data[0]+data[1]]
+            if data[1] == 0:
+                self.blocks[i] = ''
+            else:
+                self.blocks[i] = course[data[0]:data[0]+data[1]]
         
         # load stuff from individual blocks
         self.LoadMetadata() # block 1
@@ -1500,7 +1503,8 @@ class LevelUnit():
         for block in self.blocks:
             blocksize = len(block)
             saveblock.pack_into(course, HeaderOffset, FileOffset, blocksize)
-            course[FileOffset:FileOffset+blocksize] = block
+            if blocksize > 0:
+                course[FileOffset:FileOffset+blocksize] = block
             HeaderOffset += 8
             FileOffset += blocksize
         
@@ -5108,7 +5112,7 @@ class ZonesDialog(QtGui.QDialog):
         mainLayout.addWidget(buttonBox)
         self.setLayout(mainLayout)
 
-    @QtCore.pyqtSlot(bool)
+    @QtCore.pyqtSlot()
     def NewZone(self):
         if len(self.zoneTabs) >= 8:
             result = QtGui.QMessageBox.warning(self, 'Warning', 'You are trying to add more than 8 zones to a level - keep in mind that without the proper fix to the game, this will cause your level to <b>crash</b> or have other strange issues!<br><br>Are you sure you want to do this?', QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
@@ -5133,10 +5137,11 @@ class ZonesDialog(QtGui.QDialog):
         #self.NewButton.setEnabled(len(self.zoneTabs) < 8)
     
     
-    @QtCore.pyqtSlot(bool)
+    @QtCore.pyqtSlot()
     def DeleteZone(self):
         curindex = self.tabWidget.currentIndex()
         tabamount = self.tabWidget.count()
+        if tabamount == 0: return
         self.tabWidget.removeTab(curindex)
         
         for tab in range(curindex, tabamount):
@@ -7354,7 +7359,7 @@ class ReggieWindow(QtGui.QMainWindow):
                 Level.loadLevel('AUTO_FLAG', True, 1, progress)
             else:
                 Level.loadLevel(name, fullpath, area, progress)
-
+        
         OverrideSnapping = False
         
         # prepare the object picker

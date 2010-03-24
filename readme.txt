@@ -17,10 +17,12 @@ Release 2: (...)
 - Unicode filenames and Stage folder paths should now work.
 - Changed key shortcut for "Shift Objects" to fix a conflict.
 - Fixed pasting so that whitespace/newlines won't mess up Reggie clips.
-- Fixed a crash with the Delete Zone button in levels with no zones. [MUST FIX STILL]
+- Fixed a crash with the Delete Zone button in levels with no zones.
 - Added an error message if an error occurs while loading a tileset.
 - Fixed W9 toad houses showing up as unused in the level list.
 - Removed integrated help viewer (should kill the QtWebKit dependency)
+- Fixed a small error when saving levels with empty blocks
+- Passing filenames on the command line should now work (thanks, paradoq!)
 
 Release 1: (March 19th, 2010)
 - Reggie! is finally released after 4 months of work and 18 test builds!
