@@ -3121,9 +3121,7 @@
     <checkbox nybble="8" title="Unknown Value 8" comment="[S] 0-1"/>
     <checkbox nybble="9" title="Event Activated" comment="If this option is checked, the flashlight will not be activated by default, and will require an event in order to be shown. May have values of 2 and 3"/>
     <checkbox nybble="11" title="Midway Point" comment="If this option is checked, the raft will only work if the midway point has been triggered."/>
-    <list nybble="12" title="Use flashlight" comment="This will make the wiiremote controlled flashlight turn on.">
-      <entry value="1"/>
-    </list>
+    <checkbox nybble="12" title="Use flashlight" comment="This will make the wiiremote controlled flashlight turn on."/>
   </sprite>
   <sprite id="369" name="Sliding Penguin" notes="Supposedly has flags for value 5, as 1 and 8. No visible change with them.">
     <list nybble="12" title="Starting Direction" comment="Right only appears as the sprite location passes the far left side of the screen. No visible Difference in 0 &amp;2">
