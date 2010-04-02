@@ -6858,7 +6858,7 @@ class ReggieWindow(QtGui.QMainWindow):
         pathel = QtGui.QVBoxLayout(self.pathEditorTab)
         self.pathEditorLayout = pathel
         
-        pathlabel = QtGui.QLabel('Path nodes currently in the level:<br>(Double-click one to jump to it\'s first node instantly)<br>To delete a path, remove all it\'s nodes one by one.<br>To add new paths, hit the button below and right click.')
+        pathlabel = QtGui.QLabel('Path nodes currently in the level:<br>(Double-click one to jump to its first node instantly)<br>To delete a path, remove all its nodes one by one.<br>To add new paths, hit the button below and right click.')
         pathlabel.setWordWrap(True)
         deselectbtn = QtGui.QPushButton('Deselect (then right click for new path)')
         deselectbtn.clicked.connect(self.DeselectPathSelection)

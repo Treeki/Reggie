@@ -1,4 +1,4 @@
-=== Reggie! Level Editor (Release 1) ===
+=== Reggie! Level Editor (Release 2) ===
 
 Advanced level editor for New Super Mario Bros. Wii, created by Treeki and
 Tempus using Python, PyQt and Wii.py.
@@ -7,12 +7,12 @@ Homepage: http://www.rvlution.net/reggie/
 Support:  http://www.rvlution.net/forums/
 
 Source code package for this release:
-- http://www.rvlution.net/reggie/downloads/Reggie_r1_source.zip
+- http://www.rvlution.net/reggie/downloads/Reggie_r2_source.zip
 
 
 === Changelog: ===
 
-Release 2: (...)
+Release 2: (April 2nd, 2010)
 - Bug with Python 2.5 compatibility fixed.
 - Unicode filenames and Stage folder paths should now work.
 - Changed key shortcut for "Shift Objects" to fix a conflict.

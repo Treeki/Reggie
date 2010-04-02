@@ -871,13 +871,13 @@
     <value nybble="11-12" title="Unknown Value 11-12" comment="[S] Apparently is an 11-12 byte, 0-6, 8-B Won't swoop down immediately when it sees you - it'll make a brief pause before doing so."/>
   </sprite>
   <sprite id="101" name="Bob-omb">
-    <list nybble="5" title="Possible Value 5" comment="[S] 0-3, May not do anything important.">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
+    <list nybble="5" title="Load-in Animation" comment="Research '2' more">
+      <entry value="0">Normal</entry>
+      <entry value="1">Pipe Spawn</entry>
+      <entry value="2">Unmoving (Bugged?)</entry>
+      <entry value="3">Cannon Spawn</entry>
     </list>
-    <list nybble="12" title="Possible Value 12" comment="[S] 0-1 and [S] 0-3, May not do anything important.">
+    <list nybble="12" title="Possible Value 12" comment="[S] 0-1 and [S] 0-3, No visible change">
       <entry value="0">???</entry>
       <entry value="1">???</entry>
       <entry value="2">???</entry>
@@ -1658,9 +1658,9 @@
   <sprite id="197" name="Clam">
     <value nybble="9-10" title="Unknown Value 9-10" comment="[S] Nybble 9-10 or Nybble 10?? May do something."/>
     <checkbox nybble="11" title="Falling" comment="Check to make the clam fall downwards till it reaches a platform."/>
-    <list nybble="12" title="Clam Contains" comment="[RECHECK] Fill in 0-3, check 7 as well, if 7 is a 1-up then the list loops after 0-3.">
-      <entry value="0">????</entry>
-      <entry value="1">????</entry>
+    <list nybble="12" title="Clam Contains">
+      <entry value="0">Empty</entry>
+      <entry value="1">Star Coin?!?</entry>
       <entry value="2">2 Coins</entry>
       <entry value="3">1-up</entry>
     </list>
@@ -1675,31 +1675,30 @@
     </list>
   </sprite>
   <sprite id="202" name="Toad House - Cannon"/>
-  <sprite id="203" name="Toad House - Chest">
+  <sprite id="203" name="Toad House - Chest" notes="Note that opening a chest will complete the level with the standard exit. (There may be a flag to force Secret Exit or something like that)">
     <value nybble="3-4" title="Unknown ID" comment="Used in all ambushes except W1"/>
     <value nybble="5" title="Unknown Value 5" comment="[S] 0-15, 1 Used in W6 Ambushes"/>
     <value nybble="8" title="Unknown Value 8" comment="[S] 0-15"/>
     <checkbox nybble="9" title="Unknown Value 9" comment="Unchecked in W1/W2 Ambushes"/>
     <value nybble="10" title="Unknown Value 10" comment="[S] 0-15, Used in all Ambushes"/>
-    <list nybble="12" title="Chest Contains" comment="[CHECK] Check all values.">
-      <entry value="0">Toad and 3 Mushrooms</entry>
+    <list nybble="12" title="Chest Contains">
+      <entry value="0">Empty</entry>
       <entry value="1">Empty</entry>
       <entry value="2">Mushroom</entry>
-      <entry value="3">???</entry>
-      <entry value="4">???</entry>
-      <entry value="5">???</entry>
-      <entry value="6">???</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
       <entry value="7">Star</entry>
-      <entry value="8">???</entry>
+      <entry value="8">Ice Flower</entry>
       <entry value="9">???</entry>
       <entry value="10">???</entry>
       <entry value="11">???</entry>
       <entry value="12">???</entry>
       <entry value="13">???</entry>
       <entry value="14">???</entry>
-      <entry value="15">???</entry>
+      <entry value="15">Random Item</entry>
     </list>
-    <value nybble="0" title="Notes" comment="Note that opening a chest will complete the level with the standard exit. (There may be a flag to force Secret Exit or something like that)"/>
   </sprite>
   <sprite id="204" name="Rolling Spike Ball Generator">
     <value nybble="3-4" title="Possible Event ID" comment="Nybble 5 may be Event Triggered? Probably not, though."/>
@@ -2726,32 +2725,27 @@
     <value nybble="11-12" title="Rotation ID" comment="Match with a Rotation Controller to make this sprite move."/>
   </sprite>
   <sprite id="307" name="Synchronized Flame Jet Controller">
-    <value nybble="7-8" title="Unknown Value 7" comment="[S] 0-255, 0xC0 Used"/>
-    <value nybble="9-10" title="Unknown Value 9" comment="[S] 0-255, 0xC0 Used"/>
-    <list nybble="11" title="Unknown Value 11" comment="[S] 0-7">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
-      <entry value="4">???</entry>
-      <entry value="5">???</entry>
-      <entry value="6">???</entry>
-      <entry value="7">???</entry>
-    </list>
+    <value nybble="7-8" title="Delay Before Mode 2" comment="Amount of time before the Flame Jets switch to Mode 2. 0-255, Nintendo uses 192"/>
+    <value nybble="9-10" title="Delay Before Mode 1" comment="Amount of time before the Flame Jets switch to Mode 1. 0-255, Nintendo uses 192"/>
+    <value nybble="11" title="Length" comment="Value + 2 (Maximum length of 9)"/>
     <value nybble="12" title="Flame Jet ID" comment="Known matched sprites - 309"/>
   </sprite>
   <sprite id="308" name="Hammer Brother - For Platforms (?)" notes="&quot;En_Lift_HammerBros&quot; Likely allows it to be used on places where he shouldn't jump off."/>
   <sprite id="309" name="Synchronized Flame Jet ">
-    <list nybble="10" title="Direction?" comment="[S] 0-1">
-      <entry value="0">???</entry>
-      <entry value="1">???</entry>
+    <list nybble="10" title="Mode 1">
+      <entry value="0">On</entry>
+      <entry value="1">Off</entry>
+    </list>
+    <list nybble="10" title="Mode 2">
+      <entry value="0">Off</entry>
+      <entry value="1">On</entry>
     </list>
     <value nybble="11" title="Flame Jet ID" comment="Known matches sprites - 307"/>
-    <list nybble="12" title="Starting Orentation" comment="[S] 0-3">
-      <entry value="0">Left / Right</entry>
-      <entry value="1">???</entry>
-      <entry value="2">Up / Down</entry>
-      <entry value="3">???</entry>
+    <list nybble="12" title="Starting Orentation" comment="Flame Jet moves from Right to Left and back, or from Up to Down and back.">
+      <entry value="0">Right</entry>
+      <entry value="1">Left</entry>
+      <entry value="2">Up</entry>
+      <entry value="3">Down</entry>
     </list>
   </sprite>
   <sprite id="310" name="Arrow Signboard">
@@ -3123,11 +3117,13 @@
   <sprite id="368" name="Rail Controlled Moving Flashlight Raft">
     <value nybble="3-4" title="Triggering Event ID" comment="The flashlight will be turned on when this event ID is activated."/>
     <value nybble="5-6" title="Starting Path Node ID" comment="Changes the path node ID where the raft appears."/>
-    <value nybble="7" title="Unknown Value 7" comment="[S] 0-15, Likely Path ID."/>
+    <value nybble="7" title="Path ID" comment="Path ID the boat will take."/>
     <checkbox nybble="8" title="Unknown Value 8" comment="[S] 0-1"/>
     <checkbox nybble="9" title="Event Activated" comment="If this option is checked, the flashlight will not be activated by default, and will require an event in order to be shown. May have values of 2 and 3"/>
     <checkbox nybble="11" title="Midway Point" comment="If this option is checked, the raft will only work if the midway point has been triggered."/>
-    <checkbox nybble="12" title="Unknown Value 12" comment="[S] 0-1"/>
+    <list nybble="12" title="Use flashlight" comment="This will make the wiiremote controlled flashlight turn on.">
+      <entry value="1"/>
+    </list>
   </sprite>
   <sprite id="369" name="Sliding Penguin" notes="Supposedly has flags for value 5, as 1 and 8. No visible change with them.">
     <list nybble="12" title="Starting Direction" comment="Right only appears as the sprite location passes the far left side of the screen. No visible Difference in 0 &amp;2">
@@ -3912,10 +3908,24 @@
   </sprite>
   <sprite id="474" name="Dancing Coin/Block Controller" notes="Pair coins and blocks with this sprite to make them dance back and forth in tempo with the music. One per zone is all that is needed, and it can be placed anywhere in the zone, though placing it by the first entrance is recommended."/>
   <sprite id="475" name="Path Controlled Ice Flow">
-    <value nybble="6" title="Unknown Value 6" comment="0, 1, 2, 7 (Uses 2, 7 in 3-03 A2)"/>
-    <value nybble="7" title="Unknown Value 7" comment="1-B, F   (Uses Block 13 Data)"/>
+    <value nybble="6" title="Node ID" comment="Node ID to start at"/>
+    <value nybble="7" title="Path ID" comment="Path ID"/>
     <checkbox nybble="11" title="Wiggling" comment="[CHECK] Needs a better description"/>
-    <list nybble="12" title="Size" comment="[CHECK] Record all 16 values with block measurements."/>
+    <list nybble="12" title="Size">
+      <entry value="0">3x3</entry>
+      <entry value="1">4x4</entry>
+      <entry value="2">5x5</entry>
+      <entry value="3">4x3</entry>
+      <entry value="4">5x4</entry>
+      <entry value="5">7x6</entry>
+      <entry value="6">16x11</entry>
+      <entry value="7">11x8</entry>
+      <entry value="8">2x4</entry>
+      <entry value="9">3x4</entry>
+      <entry value="10">6x7</entry>
+      <entry value="11">2x5</entry>
+      <entry value="12">3x5</entry>
+    </list>
   </sprite>
   <sprite id="476" name="Flying Wrench" notes="Also check for a [Camera Related] value, similar to the Cannons.">
     <checkbox nybble="11" title="Unknown Value 11" comment="???"/>
