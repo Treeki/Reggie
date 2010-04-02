@@ -4175,7 +4175,7 @@ class PathNodeEditorWidget(QtGui.QWidget):
         
         self.delay = QtGui.QSpinBox()
         self.delay.setRange(0, 65535)
-        self.delay.setToolTip('<b>Delay</b><br>Amount of time to stop here (at this node) before continuing to next node. Unknown unit. Mess around and report your findings!')
+        self.delay.setToolTip('<b>Delay</b><br>Amount of time to stop here (at this node) before continuing to next node. Unit is 1/60 of a second (60 for 1 second)')
         self.delay.valueChanged.connect(self.HandleDelayChanged)
         
         self.loopat = QtGui.QSpinBox()
