@@ -4175,12 +4175,12 @@ class PathNodeEditorWidget(QtGui.QWidget):
         
         self.delay = QtGui.QSpinBox()
         self.delay.setRange(0, 65535)
-        self.delay.setToolTip('<b>Unknown use!</b><br>Might be delay (before moving on to next node) as suggested by Treeki. Mess around and report your findings!')
+        self.delay.setToolTip('<b>Delay</b><br>Amount of time to stop here (at this node) before continuing to next node. Unit is 1/60 of a second (60 for 1 second)')
         self.delay.valueChanged.connect(self.HandleDelayChanged)
         
         self.loopat = QtGui.QSpinBox()
         self.loopat.setRange(0, 65535)
-        self.loopat.setToolTip('<b>Unknown use!</b><br>Might be \'ID to loop to at end of path\' as suggested by Treeki. W5-Ghost House paths has this at 2. Mess around and report your findings!')
+        self.loopat.setToolTip('<b>Options (?)</b><br>If the number you enter here has the 2nd bit set (e.g 2), it causes the path to loop. W5-Ghost House paths has this at 2. Mess around and report your findings!')
         self.loopat.valueChanged.connect(self.HandleLoopAtChanged)
         
         # create a layout
@@ -4193,17 +4193,17 @@ class PathNodeEditorWidget(QtGui.QWidget):
         layout.addWidget(self.editingLabel, 3, 0, 1, 4, QtCore.Qt.AlignTop)
         layout.addWidget(self.editingPathLabel, 0, 0, 1, 4, QtCore.Qt.AlignTop)
         # add labels
-        layout.addWidget(QtGui.QLabel('Unknown:'), 1, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtGui.QLabel('Options (?):'), 1, 0, 1, 1, QtCore.Qt.AlignRight)
         layout.addWidget(QtGui.QLabel('Speed:'), 4, 0, 1, 1, QtCore.Qt.AlignRight)
         layout.addWidget(QtGui.QLabel('Accel:'), 5, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtGui.QLabel('Unknown:'), 6, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtGui.QLabel('Delay:'), 6, 0, 1, 1, QtCore.Qt.AlignRight)
         layout.addWidget(createHorzLine(), 2, 0, 1, -1)
 
         # add the widgets
         
         layout.addWidget(self.loopat, 1, 1, 1, -1)
-        layout.addWidget(self.accel, 5, 1, 1, -1)
         layout.addWidget(self.speed, 4, 1, 1, -1)
+        layout.addWidget(self.accel, 5, 1, 1, -1)
         layout.addWidget(self.delay, 6, 1, 1, -1)
 
         
