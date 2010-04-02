@@ -562,12 +562,12 @@
       <entry value="1">2 Blocks</entry>
     </list>
     <checkbox nybble="8" title="Possible Value 8" comment="[S]0-1"/>
-    <checkbox nybble="10" title="Clockwise" comment="Counter Clockwise if unchecked"/>
-    <list nybble="11" title="Speed">
+    <checkbox nybble="9" title="Clockwise" comment="Counter Clockwise if unchecked"/>
+    <list nybble="10" title="Speed">
       <entry value="0">Slow</entry>
       <entry value="1">Fast</entry>
     </list>
-    <checkbox nybble="12" title="Double Firebar" comment="Bar extends both directions---NOT NIBBLE 12, WHICH ONE?"/>
+    <checkbox nybble="11" title="Double Firebar" comment="Bar extends both directions"/>
     <value nybble="12" title="Length" comment="1 + Value"/>
   </sprite>
   <sprite id="63" name="Spike Ball">
@@ -831,10 +831,9 @@
   </sprite>
   <sprite id="96" name="Rotation Controller - Swaying">
     <value nybble="5" title="Swing Arc" comment="No swing arc at 0. Distance value that sets how large its swing arc is. It will swing (arc * 11.25) degrees in each direction."/>
-    <checkbox nybble="6" title="Reverse"/>
     <value nybble="7" title="Speed" comment="No movement at 0."/>
     <value nybble="8" title="Pause Length" comment="Speed value that sets how long it rests at the end of its swing"/>
-    <checkbox nybble="9" title="Unknown Value 9" comment="[S] 0-1, No visible change."/>
+    <checkbox nybble="9" title="Reverse"/>
     <value nybble="10" title="Unknown Value 10" comment="0, 1, 2, No visible change."/>
     <value nybble="11-12" title="Rotation ID" comment="Sways matched Rotation Controlled items."/>
   </sprite>
@@ -950,7 +949,7 @@
       <entry value="2">Shoots Up @ 45 Degrees</entry>
       <entry value="3">Shoots Down @ 135 Degrees</entry>
     </list>
-    <list nybble="12" title="Start Direction" comment="0, 4 (Used once as 4 in 4-04 A2)">
+    <list nybble="12" title="Start Direction">
       <entry value="0">Left</entry>
       <entry value="1">Right</entry>
     </list>
@@ -1545,7 +1544,7 @@
     </list>
     <checkbox nybble="6" title="Walk Left, Exit Stage" mask="4" comment="If this is checked, the Special Exit will force mario to walk to the left and exit the stage with an iris effect. This does not complete the stage."/>
     <value nybble="6" title="????" comment="Game checks for 0-3, plus the Stage Exit flag."/>
-    <value nybble="7" title="Entrance ID Overflow" comment="Part of the Entrance ID. If the target Entrance ID is over 16 or higher, add 1 to this value for each 16, and place the remainder as the Entrance ID"/>
+    <value nybble="7" title="Exit ID Overflow" comment="Part of the Exit ID. If the target Exit ID is over 16 or higher, add 1 to this value for each 16, and place the remainder as the Exit ID"/>
     <list nybble="8" title="????" comment="0, 1, 2, 3">
       <entry value="0">???</entry>
       <entry value="1">Requires Vine</entry>
@@ -1554,7 +1553,7 @@
     </list>
     <value nybble="10" title="Width" comment="1 + Value"/>
     <value nybble="11" title="Height" comment="1 + Value"/>
-    <value nybble="12" title="Entrance ID" comment="This exit point's destination will be used for the warp."/>
+    <value nybble="12" title="Exit ID" comment="This exit point's destination will be used for the warp."/>
   </sprite>
   <sprite id="180" name="Cheep-Chomp"/>
   <sprite id="181" name="Cheep Cheep Spawn Area - Jumping">
@@ -1625,8 +1624,8 @@
     </list>
     <value nybble="11" title="Movement Distance"/>
     <list nybble="12" title="Movement Direction">
-      <entry value="0">Up/Down</entry>
-      <entry value="1">Left/Right</entry>
+      <entry value="0">Up / Down</entry>
+      <entry value="1">Left / Right</entry>
     </list>
   </sprite>
   <sprite id="194" name="Mega Urchin">
@@ -1636,8 +1635,8 @@
     </list>
     <value nybble="11" title="Movement Distance"/>
     <list nybble="12" title="Movement Direction">
-      <entry value="0">Up/Down</entry>
-      <entry value="1">Left/Right</entry>
+      <entry value="0">Up / Down</entry>
+      <entry value="1">Left / Right</entry>
     </list>
   </sprite>
   <sprite id="195" name="Huckit Crab">
@@ -2663,7 +2662,7 @@
       <entry value="1">No</entry>
       <entry value="2">Yes</entry>
     </list>
-    <value nybble="8-9" title="Entrance ID"/>
+    <value nybble="8-9" title="Exit ID"/>
     <checkbox nybble="10" title="Unknown Value 10" comment="[S] 0-1"/>
     <list nybble="11" title="Orientation" comment="Pipe is overlapping a cannon when on ceiling">
       <entry value="0">On Ground</entry>
@@ -3063,7 +3062,7 @@
     </list>
   </sprite>
   <sprite id="359" name="Lighting - Lamp" notes="Value 12 is used as 0 and 2, but there's no visible change, and no field listed in the [S] document."/>
-  <sprite id="360" name="Rotating Hill with 8 Pipes">
+  <sprite id="360" name="Rolling Hill with 8 Pipes">
     <checkbox nybble="6" title="Invisible Pipes" comment="Pipes are invisible if checked but still enterable"/>
     <value nybble="8" title="Z-Order" comment="If you have multiple hills overlapping each other, you can use this value to stop graphics glitches from occurring. Hills with a higher Z-Order number will show behind hills with a lower number."/>
     <value nybble="10" title="Entrance ID" comment="Ties the pipe to an entrance"/>
@@ -3174,7 +3173,7 @@
       <entry value="1">Left / Right</entry>
     </list>
   </sprite>
-  <sprite id="377" name="Warp Pipe - Up">
+  <sprite id="377" name="Warp Pipe - Up" notes="Not enterable. :(">
     <list nybble="11" title="Color">
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>
@@ -3183,7 +3182,7 @@
     </list>
     <value nybble="12" title="Length"/>
   </sprite>
-  <sprite id="378" name="Warp Pipe - Down">
+  <sprite id="378" name="Warp Pipe - Down" notes="Not enterable. :(">
     <list nybble="11" title="Color">
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>
@@ -3192,7 +3191,7 @@
     </list>
     <value nybble="12" title="Length"/>
   </sprite>
-  <sprite id="379" name="Warp Pipe - Right">
+  <sprite id="379" name="Warp Pipe - Right" notes="Not enterable. :(">
     <list nybble="11" title="Color">
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>
@@ -3201,7 +3200,7 @@
     </list>
     <value nybble="12" title="Length"/>
   </sprite>
-  <sprite id="380" name="Warp Pipe - Left">
+  <sprite id="380" name="Warp Pipe - Left" notes="Not enterable. :(">
     <list nybble="11" title="Color">
       <entry value="0">Green</entry>
       <entry value="1">Red</entry>

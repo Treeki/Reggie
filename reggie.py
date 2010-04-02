@@ -6502,7 +6502,7 @@ class ReggieWindow(QtGui.QMainWindow):
         self.actions['freezepaths'].setChecked(not PathsNonFrozen)
         
         self.CreateAction('zoomin', self.HandleZoomIn, GetIcon('zoomin'), 'Zoom In', 'Zoom into the main level view', QtGui.QKeySequence.ZoomIn, False)
-        self.CreateAction('zoomactual', self.HandleZoomActual, GetIcon('zoomactual'), 'Zoom 100%', 'Show the level at the default zoom', QtGui.QKeySequence('Ctrl+='), False)
+        self.CreateAction('zoomactual', self.HandleZoomActual, GetIcon('zoomactual'), 'Zoom 100%', 'Show the level at the default zoom', QtGui.QKeySequence('Ctrl+0'), False)
         self.CreateAction('zoomout', self.HandleZoomOut, GetIcon('zoomout'), 'Zoom Out', 'Zoom out of the main level view', QtGui.QKeySequence.ZoomOut, False)
         
         self.CreateAction('areaoptions', self.HandleAreaOptions, GetIcon('area'), 'Area Settings...', 'Controls tileset swapping, stage timer, entrance on load, and stage wrap', QtGui.QKeySequence('Ctrl+Alt+A'))
@@ -6713,10 +6713,13 @@ class ReggieWindow(QtGui.QMainWindow):
 
         # create the palette
         dock = QtGui.QDockWidget('Palette', self)
-        dock.setFeatures(QtGui.QDockWidget.DockWidgetMovable | QtGui.QDockWidget.DockWidgetFloatable)
+        dock.setFeatures(QtGui.QDockWidget.DockWidgetMovable | QtGui.QDockWidget.DockWidgetFloatable | QtGui.QDockWidget.DockWidgetClosable)
         dock.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.RightDockWidgetArea)
         dock.setObjectName('palette') #needed for the state to save/restore correctly
         self.creationDock = dock
+        act = dock.toggleViewAction()
+        act.setShortcut(QtGui.QKeySequence('Ctrl+P'))
+        self.vmenu.addAction(act)
         
         self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
         dock.setVisible(True)
@@ -8486,7 +8489,7 @@ class ReggieWindow(QtGui.QMainWindow):
             
             for idx, oldname, assignment, widget in zip(xrange(4), oldnames, assignments, widgets):
                 ts_idx = widget.currentIndex()
-                fname = unicode(widget.itemData(ts_idx).toPyObject())
+                fname = str(widget.itemData(ts_idx).toPyObject())
                 
                 if fname == '':
                     toUnload.append(idx)

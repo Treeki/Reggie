@@ -35,7 +35,6 @@ setup(
         'includes': ['sip', 'encodings', 'encodings.hex_codec', 'encodings.utf_8'],
         'compressed': 1,
         'optimize': 2,
-        'ascii': True,
         'excludes': excludes,
         'bundle_files': 3,
         'dist_dir': dir
