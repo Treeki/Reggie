@@ -22,7 +22,11 @@ Release 2: (...)
 - Fixed W9 toad houses showing up as unused in the level list.
 - Removed integrated help viewer (should kill the QtWebKit dependency)
 - Fixed a small error when saving levels with empty blocks
-- Passing filenames on the command line should now work (thanks, paradoq!)
+- Fixed tileset changing
+- Palette is no longer unclosable
+- Ctrl+0 now sets the zoom level to 100%
+- Path editing support added (thanks, Angel-SL)
+
 
 Release 1: (March 19th, 2010)
 - Reggie! is finally released after 4 months of work and 18 test builds!
