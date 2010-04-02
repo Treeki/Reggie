@@ -1670,8 +1670,9 @@ class LevelUnit():
         for i in xrange(pathcount):
             data = unpack(pathdata, offset)
             nodes = self.LoadPathNodes(data[1], data[2])
-            add2p = {'id': data[0],
-                     'nodes': []
+            add2p = {'id': int(data[0]),
+                     'nodes': [],
+                     'loopat': int(data[3])
                      }            
             for node in nodes:
                 add2p['nodes'].append(node)
@@ -1705,6 +1706,7 @@ class LevelUnit():
                         'y':int(data[1]),
                         'speed':float(data[2]),
                         'accel':float(data[3]),
+                        'delay':int(data[4])
                         #'id':i
             })
             offset += 16
@@ -1764,7 +1766,7 @@ class LevelUnit():
             if(len(path['nodes']) < 1): continue
             nodebuffer = self.SavePathNodes(nodebuffer, nodeoffset, path['nodes'])
             
-            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])), 0)
+            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])), int(path['loopat']))
             offset += 8
             nodeoffset += len(path['nodes']) * 16
             nodeindex += len(path['nodes'])
@@ -1777,7 +1779,7 @@ class LevelUnit():
         #[20:29:04]  [@Treeki] struct PathNode { unsigned short x; unsigned short y; float speed; float unknownMaybeAccel; short unknown; char padding[2]; }
         nodestruct = struct.Struct('>HHffhxx')
         for node in nodes:
-            nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']), float(node['accel']), 0)
+            nodestruct.pack_into(buffer, offset, int(node['x']), int(node['y']), float(node['speed']), float(node['accel']), int(node['delay']))
             offset += 16
         return buffer
     
@@ -2962,10 +2964,6 @@ class PathEditorItem(LevelEditorItem):
         # called when 1. add node 2. delete node 3. change node order
         # hacky code but it works. considering how pathnodes are stored.
         self.nodeid = self.pathinfo['nodes'].index(self.nodeinfo)
-        # might as well grab next node's objx and objy if it exists
-        if((self.nodeid+1) < len(self.pathinfo['nodes'])):
-            self.nobjx = self.pathinfo['nodes'][self.nodeid+1]['x']
-            self.nobjy = self.pathinfo['nodes'][self.nodeid+1]['y']
         self.UpdateTooltip()
         self.listitem.setText(self.ListString())
         self.scene().update()
@@ -3011,12 +3009,100 @@ class PathEditorItem(LevelEditorItem):
         
         if(len(self.pathinfo['nodes']) < 1):
             Level.pathdata.remove(self.pathinfo)
+            self.scene().removeItem(self.pathinfo['peline'])
         
         #update other node's IDs
         for pathnode in self.pathinfo['nodes']:
             pathnode['graphicsitem'].updateId()
         
         self.scene().update(self.x(), self.y(), self.BoundingRect.width(), self.BoundingRect.height())
+
+
+
+class PathEditorLineItem(LevelEditorItem):
+    """Level editor item to draw a line between two pathnodes"""
+    BoundingRect = QtCore.QRectF(0,0,1,1) #compute later #QtCore.QRectF(0,0,max(sys.float_info),max(sys.float_info)) #Compute later
+    #SelectionRect = QtCore.QRectF(0,0,0,0)
+
+    
+    
+    def __init__(self, nodelist):
+        """Creates a path with specific data"""
+        
+        global mainWindow
+        LevelEditorItem.__init__(self)
+        
+        self.font = NumberFont
+        self.objx = 0
+        self.objy = 0
+        self.nodelist = nodelist
+        self.setFlag(self.ItemIsMovable, False)
+        self.setFlag(self.ItemIsSelectable, False)
+        self.computeBoundRectAndPos()
+        self.setZValue(25002)
+        self.UpdateTooltip()
+    
+    def UpdateTooltip(self):
+        """For compatibility, just in case"""
+        self.setToolTip('')
+    
+    def ListString(self):
+        """Returns an empty string"""
+        return ''
+    
+    def nodePosChanged(self):
+        self.computeBoundRectAndPos()
+        self.scene().update()
+    
+    def computeBoundRectAndPos(self):
+        xcoords = []
+        ycoords = []
+        for node in self.nodelist:
+            xcoords.append(int(node['x']))
+            ycoords.append(int(node['y']))
+        self.objx = (min(xcoords)-4)#*1.5
+        self.objy = (min(ycoords)-4)#*1.5
+        
+        mywidth = (8 + (max(xcoords) - self.objx))*1.5
+        myheight = (8 + (max(ycoords) - self.objy))*1.5
+        global DirtyOverride
+        DirtyOverride += 1
+        self.setPos(self.objx * 1.5, self.objy * 1.5)
+        DirtyOverride -= 1
+        self.prepareGeometryChange()
+        self.BoundingRect = QtCore.QRectF(0,0,mywidth,myheight)
+        
+        
+    
+    def paint(self, painter, option, widget):
+        """Paints the object"""
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        painter.setClipRect(option.exposedRect)
+        
+        linecolor = QtGui.QColor.fromRgb(6,249,20)
+        painter.setBrush(QtGui.QBrush(linecolor))
+        painter.setPen(QtGui.QPen(linecolor, 3, join = QtCore.Qt.RoundJoin, cap = QtCore.Qt.RoundCap))
+        ppath = QtGui.QPainterPath()
+        
+        lines = []
+        
+        firstn = True
+        
+        snl = self.nodelist
+        for j in xrange(len(self.nodelist)):
+            if((j+1) < len(self.nodelist)): 
+                lines.append(QtCore.QPointF(float(snl[j]['x']*1.5) - self.x(),float(snl[j]['y']*1.5) - self.y()))
+                lines.append(QtCore.QPointF(float(snl[j+1]['x']*1.5) - self.x(),float(snl[j+1]['y']*1.5) - self.y()))
+        
+        painter.drawLines(lines)
+
+    
+    def delete(self):
+        """Delete the line from the level"""
+        
+        
+        self.scene().update()
+
 
 class LevelOverviewWidget(QtGui.QWidget):
     """Widget that shows an overview of the level and can be clicked to move the view"""
@@ -4070,24 +4156,32 @@ class PathNodeEditorWidget(QtGui.QWidget):
         """Constructor"""
         QtGui.QWidget.__init__(self)
         self.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed))
-        
-        self.CanUseFlag8 = set([3,4,5,6,16,17,18,19])
-        self.CanUseFlag4 = set([3,4,5,6])
+
         
         # create widgets
         #[20:52:41]  [Angel-SL] 1. (readonly) pathid 2. (readonly) nodeid 3. x 4. y 5. speed (float spinner) 6. accel (float spinner)
         #not doing [20:52:58]  [Angel-SL] and 2 buttons - 7. "Move Up" 8. "Move Down"
         self.speed = QtGui.QDoubleSpinBox()
         self.speed.setRange(min(sys.float_info), max(sys.float_info))
-        self.speed.setToolTip('Speed (unknown unit). Be careful, upper and lower bound are unknown. Mess around and report your findings!')
+        self.speed.setToolTip('Speed (unknown unit). Mess around and report your findings!')
         self.speed.setDecimals(int(sys.float_info.__getattribute__('dig')))
         self.speed.valueChanged.connect(self.HandleSpeedChanged)
         
         self.accel = QtGui.QDoubleSpinBox()
         self.accel.setRange(min(sys.float_info), max(sys.float_info))
-        self.accel.setToolTip('Accel (unknown unit). Be careful, upper and lower bound are unknown. Mess around and report your findings!')
+        self.accel.setToolTip('Accel (unknown unit). Mess around and report your findings!')
         self.accel.setDecimals(int(sys.float_info.__getattribute__('dig')))
         self.accel.valueChanged.connect(self.HandleAccelChanged)
+        
+        self.delay = QtGui.QSpinBox()
+        self.delay.setRange(0, 65535)
+        self.delay.setToolTip('<b>Unknown use!</b><br>Might be delay (before moving on to next node) as suggested by Treeki. Mess around and report your findings!')
+        self.delay.valueChanged.connect(self.HandleDelayChanged)
+        
+        self.loopat = QtGui.QSpinBox()
+        self.loopat.setRange(0, 65535)
+        self.loopat.setToolTip('<b>Unknown use!</b><br>Might be \'ID to loop to at end of path\' as suggested by Treeki. W5-Ghost House paths has this at 2. Mess around and report your findings!')
+        self.loopat.valueChanged.connect(self.HandleLoopAtChanged)
         
         # create a layout
         layout = QtGui.QGridLayout()
@@ -4095,17 +4189,22 @@ class PathNodeEditorWidget(QtGui.QWidget):
         
         # "Editing Entrance #" label
         self.editingLabel = QtGui.QLabel('-')
-        layout.addWidget(self.editingLabel, 0, 0, 1, 4, QtCore.Qt.AlignTop)
-        
+        self.editingPathLabel = QtGui.QLabel('-')
+        layout.addWidget(self.editingLabel, 3, 0, 1, 4, QtCore.Qt.AlignTop)
+        layout.addWidget(self.editingPathLabel, 0, 0, 1, 4, QtCore.Qt.AlignTop)
         # add labels
-        layout.addWidget(QtGui.QLabel('Speed:'), 1, 0, 1, 1, QtCore.Qt.AlignRight)
-        layout.addWidget(QtGui.QLabel('Accel:'), 2, 0, 1, 1, QtCore.Qt.AlignRight)
-        
-        #layout.addWidget(createHorzLine(), 2, 0, 1, 4)
+        layout.addWidget(QtGui.QLabel('Unknown:'), 1, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtGui.QLabel('Speed:'), 4, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtGui.QLabel('Accel:'), 5, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtGui.QLabel('Unknown:'), 6, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(createHorzLine(), 2, 0, 1, -1)
 
         # add the widgets
-        layout.addWidget(self.accel, 2, 1, 1, -1)
-        layout.addWidget(self.speed, 1, 1, 1, -1)
+        
+        layout.addWidget(self.loopat, 1, 1, 1, -1)
+        layout.addWidget(self.accel, 5, 1, 1, -1)
+        layout.addWidget(self.speed, 4, 1, 1, -1)
+        layout.addWidget(self.delay, 6, 1, 1, -1)
 
         
         self.path = None
@@ -4115,13 +4214,15 @@ class PathNodeEditorWidget(QtGui.QWidget):
     def setPath(self, path):
         """Change the entrance being edited by the editor, update all fields"""
         if self.path == path: return
-        
-        self.editingLabel.setText('<b>Editing Path %d Node %d</b>' % (path.pathid, path.nodeid))
+        self.editingPathLabel.setText('<b>Editing Path %d</b>' % (path.pathid))
+        self.editingLabel.setText('<b>Editing Node %d</b>' % (path.nodeid))
         self.path = path
         self.UpdateFlag = True
         
         self.speed.setValue(path.nodeinfo['speed'])
         self.accel.setValue(path.nodeinfo['accel'])
+        self.delay.setValue(path.nodeinfo['delay'])
+        self.loopat.setValue(path.pathinfo['loopat'])
         
         self.UpdateFlag = False
     
@@ -4132,14 +4233,30 @@ class PathNodeEditorWidget(QtGui.QWidget):
         if self.UpdateFlag: return
         SetDirty()
         self.path.nodeinfo['speed'] = i
+        
     
     
     @QtCore.pyqtSlot(float)
     def HandleAccelChanged(self, i):
         """Handler for the accel changing"""
+        if self.UpdateFlag: return
+        SetDirty()
         self.path.nodeinfo['accel'] = i
         
     
+    @QtCore.pyqtSlot(int)
+    def HandleDelayChanged(self, i):
+        """Handler for the 2nd unk changing"""
+        if self.UpdateFlag: return
+        SetDirty()
+        self.path.nodeinfo['delay'] = i
+
+    @QtCore.pyqtSlot(int)
+    def HandleLoopAtChanged(self, i):
+        if self.UpdateFlag: return
+        SetDirty()
+        self.path.pathinfo['loopat'] = i
+        
 
 
 class LocationEditorWidget(QtGui.QWidget):
@@ -4410,6 +4527,7 @@ class LevelScene(QtGui.QGraphicsScene):
                 painter.restore()
 
 
+
 class LevelViewWidget(QtGui.QGraphicsView):
     """GraphicsView subclass for the level view"""
     PositionHover = QtCore.pyqtSignal(int, int)
@@ -4596,7 +4714,13 @@ class LevelViewWidget(QtGui.QGraphicsView):
                     }
                     Level.pathdata.append(newpathdata)
                     newnode = PathEditorItem(clickedx, clickedy, None, None, newpathdata, newpathdata['nodes'][0])
+                    newnode.positionChanged = mw.HandlePathPosChange
+                    
                     mw.scene.addItem(newnode)
+                    
+                    peline = PathEditorLineItem(newpathdata['nodes'])
+                    newpathdata['peline'] = peline
+                    mw.scene.addItem(peline)
                     
                     Level.pathdata.sort(key=lambda path: int(path['id']));
                     
@@ -4647,7 +4771,7 @@ class LevelViewWidget(QtGui.QGraphicsView):
                     #PaintingEntranceListIndex = minimumID
                     
                     Level.paths.append(newnode)
-                    
+                    pathd['peline'].nodePosChanged()
                     self.currentobj = newnode
                     self.dragstartx = clickedx
                     self.dragstarty = clickedy
@@ -7858,6 +7982,12 @@ class ReggieWindow(QtGui.QMainWindow):
             path.listitem = QtGui.QListWidgetItem(path.ListString())
             pathlist.addItem(path.listitem)
         
+        for path in Level.pathdata:
+            peline = PathEditorLineItem(path['nodes'])
+            path['peline'] = peline
+            addItem(peline)
+
+        
         # fill up the area list
         self.areaComboBox.clear()
         for i in xrange(1,Level.areacount+1):
@@ -8203,6 +8333,7 @@ class ReggieWindow(QtGui.QMainWindow):
         if oldx == x and oldy == y: return
         obj.listitem.setText(obj.ListString())
         obj.updatePos()
+        obj.pathinfo['peline'].nodePosChanged()
         if obj == self.selObj:
             SetDirty()
     
@@ -8842,7 +8973,10 @@ def main():
     # check to see if we have anything saved
     autofile = unicode(settings.value('AutoSaveFilePath', 'none').toPyObject())
     if autofile != 'none':
-        autofiledata = unicode(settings.value('AutoSaveFileData', 'x').toPyObject())
+        try:
+            autofiledata = unicode(settings.value('AutoSaveFileData', 'x').toPyObject(), "utf-8")
+        except UnicodeDecodeError:
+            autofiledata = 'x'
         if autofiledata != 'x':
             result = AutoSavedInfoDialog(autofile).exec_()
             if result == QtGui.QDialog.Accepted:
