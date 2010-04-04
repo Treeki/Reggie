@@ -2931,8 +2931,8 @@ class PathEditorItem(LevelEditorItem):
         self.nobjy = nobjy
         self.listitem = None
         self.LevelRect = (QtCore.QRectF(self.objx/16, self.objy/16, 24/16, 24/16))
-        self.setFlag(self.ItemIsMovable, True)#PathsNonFrozen)
-        self.setFlag(self.ItemIsSelectable, True)#PathsNonFrozen)
+        self.setFlag(self.ItemIsMovable, PathsNonFrozen)
+        self.setFlag(self.ItemIsSelectable, PathsNonFrozen)
         ## handle path freezing later
         
         global DirtyOverride
@@ -8948,12 +8948,13 @@ def main():
     settings = QtCore.QSettings('Reggie', 'Reggie Level Editor')
     
     global EnableAlpha, GridEnabled
-    global ObjectsNonFrozen, SpritesNonFrozen, EntrancesNonFrozen, LocationsNonFrozen
+    global ObjectsNonFrozen, SpritesNonFrozen, EntrancesNonFrozen, LocationsNonFrozen, PathsNonFrozen
     
     GridEnabled = (settings.value('GridEnabled', 'false').toPyObject() == 'true')
     ObjectsNonFrozen = (settings.value('FreezeObjects', 'false').toPyObject() == 'false')
     SpritesNonFrozen = (settings.value('FreezeSprites', 'false').toPyObject() == 'false')
     EntrancesNonFrozen = (settings.value('FreezeEntrances', 'false').toPyObject() == 'false')
+    PathsNonFrozen = (settings.value('FreezePaths', 'false').toPyObject() == 'false')
     LocationsNonFrozen = (settings.value('FreezeLocations', 'false').toPyObject() == 'false')
     
     if settings.contains('GamePath'):
