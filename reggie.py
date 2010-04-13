@@ -1669,7 +1669,7 @@ class LevelUnit():
             nodes = self.LoadPathNodes(data[1], data[2])
             add2p = {'id': int(data[0]),
                      'nodes': [],
-                     'loopat': int(data[3])
+                     'loops': data[3] == 2
                      }            
             for node in nodes:
                 add2p['nodes'].append(node)
@@ -1763,7 +1763,7 @@ class LevelUnit():
             if(len(path['nodes']) < 1): continue
             nodebuffer = self.SavePathNodes(nodebuffer, nodeoffset, path['nodes'])
             
-            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])), int(path['loopat']))
+            pathstruct.pack_into(buffer, offset, int(path['id']), int(nodeindex), int(len(path['nodes'])), 2 if path['loops'] else 0)
             offset += 8
             nodeoffset += len(path['nodes']) * 16
             nodeindex += len(path['nodes'])
@@ -2928,8 +2928,8 @@ class PathEditorItem(LevelEditorItem):
         self.nobjy = nobjy
         self.listitem = None
         self.LevelRect = (QtCore.QRectF(self.objx/16, self.objy/16, 24/16, 24/16))
-        self.setFlag(self.ItemIsMovable, True)#PathsNonFrozen)
-        self.setFlag(self.ItemIsSelectable, True)#PathsNonFrozen)
+        self.setFlag(self.ItemIsMovable, PathsNonFrozen)
+        self.setFlag(self.ItemIsSelectable, PathsNonFrozen)
         ## handle path freezing later
         
         global DirtyOverride
@@ -4175,10 +4175,9 @@ class PathNodeEditorWidget(QtGui.QWidget):
         self.delay.setToolTip('<b>Delay</b><br>Amount of time to stop here (at this node) before continuing to next node. Unit is 1/60 of a second (60 for 1 second)')
         self.delay.valueChanged.connect(self.HandleDelayChanged)
         
-        self.loopat = QtGui.QSpinBox()
-        self.loopat.setRange(0, 65535)
-        self.loopat.setToolTip('<b>Options (?)</b><br>If the number you enter here has the 2nd bit set (e.g 2), it causes the path to loop. W5-Ghost House paths has this at 2. Mess around and report your findings!')
-        self.loopat.valueChanged.connect(self.HandleLoopAtChanged)
+        self.loops = QtGui.QCheckBox()
+        self.loops.setToolTip('<b>Loops</b><br>Anything following this path will wait for any delay set at the last node and then proceed back in a straight line to the first node, and continue.')
+        self.loops.stateChanged.connect(self.HandleLoopsChanged)
         
         # create a layout
         layout = QtGui.QGridLayout()
@@ -4190,7 +4189,7 @@ class PathNodeEditorWidget(QtGui.QWidget):
         layout.addWidget(self.editingLabel, 3, 0, 1, 4, QtCore.Qt.AlignTop)
         layout.addWidget(self.editingPathLabel, 0, 0, 1, 4, QtCore.Qt.AlignTop)
         # add labels
-        layout.addWidget(QtGui.QLabel('Options (?):'), 1, 0, 1, 1, QtCore.Qt.AlignRight)
+        layout.addWidget(QtGui.QLabel('Loops:'), 1, 0, 1, 1, QtCore.Qt.AlignRight)
         layout.addWidget(QtGui.QLabel('Speed:'), 4, 0, 1, 1, QtCore.Qt.AlignRight)
         layout.addWidget(QtGui.QLabel('Accel:'), 5, 0, 1, 1, QtCore.Qt.AlignRight)
         layout.addWidget(QtGui.QLabel('Delay:'), 6, 0, 1, 1, QtCore.Qt.AlignRight)
@@ -4198,7 +4197,7 @@ class PathNodeEditorWidget(QtGui.QWidget):
 
         # add the widgets
         
-        layout.addWidget(self.loopat, 1, 1, 1, -1)
+        layout.addWidget(self.loops, 1, 1, 1, -1)
         layout.addWidget(self.speed, 4, 1, 1, -1)
         layout.addWidget(self.accel, 5, 1, 1, -1)
         layout.addWidget(self.delay, 6, 1, 1, -1)
@@ -4219,7 +4218,7 @@ class PathNodeEditorWidget(QtGui.QWidget):
         self.speed.setValue(path.nodeinfo['speed'])
         self.accel.setValue(path.nodeinfo['accel'])
         self.delay.setValue(path.nodeinfo['delay'])
-        self.loopat.setValue(path.pathinfo['loopat'])
+        self.loops.setChecked(path.pathinfo['loops'])
         
         self.UpdateFlag = False
     
@@ -4249,10 +4248,10 @@ class PathNodeEditorWidget(QtGui.QWidget):
         self.path.nodeinfo['delay'] = i
 
     @QtCore.pyqtSlot(int)
-    def HandleLoopAtChanged(self, i):
+    def HandleLoopsChanged(self, i):
         if self.UpdateFlag: return
         SetDirty()
-        self.path.pathinfo['loopat'] = i
+        self.path.pathinfo['loops'] = (i == QtCore.Qt.Checked)
         
 
 
@@ -4708,7 +4707,7 @@ class LevelViewWidget(QtGui.QGraphicsView):
                     newpathid = getids.index(False)
                     newpathdata = { 'id': newpathid,
                                    'nodes': [{'x':clickedx, 'y':clickedy, 'speed':0.5, 'accel':0.00498, 'delay':0}],
-                                    'loopat':0
+                                   'loops': False
                     }
                     Level.pathdata.append(newpathdata)
                     newnode = PathEditorItem(clickedx, clickedy, None, None, newpathdata, newpathdata['nodes'][0])
@@ -8945,12 +8944,13 @@ def main():
     settings = QtCore.QSettings('Reggie', 'Reggie Level Editor')
     
     global EnableAlpha, GridEnabled
-    global ObjectsNonFrozen, SpritesNonFrozen, EntrancesNonFrozen, LocationsNonFrozen
+    global ObjectsNonFrozen, SpritesNonFrozen, EntrancesNonFrozen, LocationsNonFrozen, PathsNonFrozen
     
     GridEnabled = (settings.value('GridEnabled', 'false').toPyObject() == 'true')
     ObjectsNonFrozen = (settings.value('FreezeObjects', 'false').toPyObject() == 'false')
     SpritesNonFrozen = (settings.value('FreezeSprites', 'false').toPyObject() == 'false')
     EntrancesNonFrozen = (settings.value('FreezeEntrances', 'false').toPyObject() == 'false')
+    PathsNonFrozen = (settings.value('FreezePaths', 'false').toPyObject() == 'false')
     LocationsNonFrozen = (settings.value('FreezeLocations', 'false').toPyObject() == 'false')
     
     if settings.contains('GamePath'):
