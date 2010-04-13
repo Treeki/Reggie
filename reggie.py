@@ -18,7 +18,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 import archive
 import lz77
 import os.path
@@ -33,7 +32,7 @@ from ctypes import create_string_buffer
 from PyQt4 import QtCore, QtGui
 from xml.dom import minidom
 
-ReggieID = 'Reggie r1 by Treeki, Tempus'
+ReggieID = 'Reggie r3 by Treeki, Tempus'
 
 
 # pre-Qt4.6 compatibility
@@ -836,8 +835,7 @@ def _LoadTileset(idx, name):
     arcdata = arcf.read()
     arcf.close()
     
-    arc = archive.U8()
-    arc._load(arcdata)
+    arc = archive.U8.load(arcdata)
     
     # decompress the textures
     try:
@@ -1372,9 +1370,8 @@ class LevelUnit():
             arcdata = arcf.read()
             arcf.close()
         
-        self.arc = archive.U8()
-        self.arc._load(arcdata)
-        
+        self.arc = archive.U8.load(arcdata)
+
         # this is a hackish method but let's go through the U8 files
         reqcourse = 'course%d.bin' % area
         reql0 = 'course%d_bgdatL0.bin' % area
@@ -7406,8 +7403,7 @@ class ReggieWindow(QtGui.QMainWindow):
         arcdata = getit.read()
         getit.close()
         
-        arc = archive.U8()
-        arc._load(arcdata)
+        arc = archive.U8.load(arcdata)
         
         # get the area count
         areacount = 0
