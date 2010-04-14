@@ -6893,7 +6893,7 @@ class ReggieWindow(QtGui.QMainWindow):
         clip = self.systemClipboard.text()
         if clip != None and clip != '':
             try:
-                clip = unicode(clip)
+                clip = unicode(clip).strip()
             except UnicodeEncodeError:
                 # HELLO MY NAME IS PYTHON 2.X.
                 # I AM OLD AND THEREFORE I FAIL AT PUTTING ANYTHING
