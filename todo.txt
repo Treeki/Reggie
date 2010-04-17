@@ -1,1 +1,2 @@
 add Sanity Check feature
+add custom cursor for level view showing what layer you are drawing on

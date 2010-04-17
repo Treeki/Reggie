@@ -4614,7 +4614,11 @@ class LevelViewWidget(QtGui.QGraphicsView):
                     self.dragstartx = clickedx
                     self.dragstarty = clickedy
                                             
-                else:
+                elif CurrentSprite >= 0: # fixes a bug -Treeki
+                    #[18:15:36]  Angel-SL: I found a bug in Reggie
+                    #[18:15:42]  Angel-SL: you can paint a "No sprites found"
+                    #[18:15:47]  Angel-SL: results in a sprite -2
+                    
                     # paint a sprite
                     #clickedx = int((clicked.x()) / 1.5)
                     #clickedy = int((clicked.y()) / 1.5)
