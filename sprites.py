@@ -1573,7 +1573,7 @@ def InitRollingHillWithPipe(sprite): # 355, 360
     sprite.aux = AuxiliaryCircleOutline(sprite, 32*16)
     return (0,0,16,16)
 
-def InitBrownBlock(sprite): # 81, 82, 83, 84, 85, 86
+def InitBrownBlock(sprite):
     global ImageCache
     if 'BrownBlockTL' not in ImageCache:
         ImageCache['BrownBlockTL'] = QtGui.QPixmap('reggiedata/sprites/brown_block_tl.png')
@@ -1590,6 +1590,7 @@ def InitBrownBlock(sprite): # 81, 82, 83, 84, 85, 86
     sprite.dynSizer = SizeBrownBlock
     sprite.customPaint = True
     sprite.customPainter = PaintBrownBlock
+    if(sprite.type == 354): return (0,0,16,16)
     sprite.aux = AuxiliaryTrackObject(sprite, 16, 16, AuxiliaryTrackObject.Horizontal)
     return (0,0,16,16)
     
@@ -2178,6 +2179,7 @@ Initialisers = {
     345: InitChainHolder,
     352: InitRockyWrench,
     353: InitPipe,
+    354: InitBrownBlock,
     355: InitRollingHillWithPipe,
     356: InitBrownBlock,
     357: InitFruit,
@@ -3151,6 +3153,7 @@ def SizeBrownBlock(sprite): # 356
     
     type = sprite.type
     # now set up the track
+    if(type == 354): return
     direction = ord(sprite.spritedata[2]) & 3
     distance = (ord(sprite.spritedata[4]) & 0xF0) >> 4
     
