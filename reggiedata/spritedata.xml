@@ -62,7 +62,14 @@
       <entry value="3">???</entry>
     </list>
   </sprite>
-  <sprite id="25" name="Spiny"/>
+  <sprite id="25" name="Spiny">
+    <list nybble="12" title="Starts as...">
+      <entry value="0 "> Normal</entry>
+      <entry value="1 "> Like it was thrown by a Lakitu</entry>
+      <entry value="2 "> Shell</entry>
+      <entry value="3 "> Upside-down shell</entry>
+    </list>
+  </sprite>
   <sprite id="26" name="Upside-Down Spiny">
     <checkbox nybble="8" title="Unknown Flag 8" comment="Used in Ambush Stages. Causes a bugged attribute if the spiny is placed non-adjacent to ceiling terrain with this checked. Unknown purpose."/>
     <checkbox nybble="12" title="Unknown Flag 12" comment="No visible change, used in 6-02 A4 on all Spinys before the Midpoint"/>
@@ -228,8 +235,13 @@
     <checkbox nybble="5-6" title="Ignore Mario Location" mask="255" comment="If this is checked, the controller will only care about the status of the enemies"/>
     <value nybble="7-8" title="Enemy Location ID" comment="This is the Location where 'Enemy Status' is checked."/>
     <checkbox nybble="7-8" title="Ignore Enemy Location" mask="255" comment="If this is checked, the controller will only care about the status of Mario"/>
-    <list nybble="9" title="Enemy Status" comment="0 - Event is only triggered if there are no enemies inside the Enemy Location">
-      <entry value="0">No enemies in the Location</entry>
+    <list nybble="9" title="Mario Powerup" comment="Event will only be triggered if Mario's powerup matches the specified, or this is set to 0.">
+      <entry value="0">Any</entry>
+      <entry value="1">No Powerup</entry>
+      <entry value="2">Red Mushroom</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="4">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
     </list>
     <list nybble="10" title="Mario Status" comment="0 - Event is only triggered if a Player is inside the Mario Location.&lt;br&gt;1 - Event is only triggered if a Player is touching the ground while inside the Mario Location.&lt;br&gt;2- Event is only triggered if a Player is jumping or otherwise not touching the ground inside the Mario Location.">
       <entry value="0">Inside the Location</entry>
@@ -449,7 +461,7 @@
   </sprite>
   <sprite id="54" name="Lakitu">
     <value nybble="8" title="Possible Value 8" comment="[S]0-15"/>
-    <checkbox nybble="10" title="Possible Value 10" comment="[S]0-1"/>
+    <checkbox nybble="10" title="Spawn from the background" comment="If set to 1, Lakitu flies in from the background instead of spawning instantly."/>
     <value nybble="12" title="Unknown Value 12" comment="1, Used in World 7 Ambush Levels"/>
   </sprite>
   <sprite id="55" name="Incomplete Beta Rising Tilt Platform" notes="This is a beta platform and its use is not recommended.">
@@ -555,7 +567,12 @@
       <entry value="1">Left</entry>
     </list>
   </sprite>
-  <sprite id="61" name="Big Boo"/>
+  <sprite id="61" name="Big Boo">
+    <list nybble="12" title="Speed" comment="Makes the Boo slighly faster">
+      <entry value="0">Normal</entry>
+      <entry value="1">Faster</entry>
+    </list>
+  </sprite>
   <sprite id="62" name="Spinning Firebar">
     <list nybble="7" title="Base Size" comment="Block Base. If two blocks wide, centers from sprite location. (May need to add invisible blocks to set a collision space)">
       <entry value="0">1 Block</entry>
@@ -1056,12 +1073,18 @@
     <value nybble="12" title="Unknown Value 12" comment="(Ref: 54), may not be used."/>
   </sprite>
   <sprite id="125" name="Chain Link Koopa - Horizontal">
-    <checkbox nybble="11" title="Unknown Value 11" comment="[CHECK]"/>
-    <checkbox nybble="12" title="Unknown Value 12" comment="[CHECK]"/>
+    <list nybble="11" title="Color" comment="A red koopa is slightly faster">
+      <entry value="0">Green</entry>
+      <entry value="1">Red</entry>
+    </list>
+    <checkbox nybble="12" title="Starts Behind Fence"/>
   </sprite>
   <sprite id="126" name="Chain Link Koopa - Vertical">
-    <checkbox nybble="11" title="Unknown Value 11" comment="[CHECK]"/>
-    <checkbox nybble="12" title="Unknown Value 12" comment="[CHECK]"/>
+    <list nybble="11" title="Color" comment="A red koopa is slightly faster">
+      <entry value="0">Green</entry>
+      <entry value="1">Red</entry>
+    </list>
+    <checkbox nybble="12" title="Starts Behind Fence"/>
   </sprite>
   <sprite id="127" name="Chain Link Flip Panel"/>
   <sprite id="128" name="Long Chain Link Flip Panel"/>
@@ -1076,6 +1099,10 @@
   <sprite id="130" name="Wiggler"/>
   <sprite id="131" name="Boo">
     <value nybble="11" title="Unknown Flag 11" comment="0, 1 No visible change"/>
+    <list nybble="12" title="Speed" comment="Makes the Boo slightly faster">
+      <entry value="0">Normal</entry>
+      <entry value="1">Faster</entry>
+    </list>
   </sprite>
   <sprite id="132" name="Movement Controlled Platform - &quot;En_Rail_Polygon&quot;">
     <value nybble="3-4" title="Possible ID" comment="May or may not use IDs"/>
@@ -1399,12 +1426,18 @@
   </sprite>
   <sprite id="158" name="Fire Snake">
     <checkbox nybble="11" title="Unknown Flag 11" comment="No visible change."/>
-    <checkbox nybble="12" title="Unknown Value 12" comment="[S] 0-1"/>
+    <checkbox nybble="12" title="Don't move" comment="It will be a stationary ball of fire, until you come close to it."/>
   </sprite>
   <sprite id="159" name="Movement Controller - Use Paths">
-    <value nybble="5-6" title="Unknown Value 5-6" comment="Setting this to 2 seems to make it reverse its direction- doublecheck to make sure it doesn't have other values?"/>
-    <value nybble="7" title="Path ID" comment="Block 13 Data"/>
-    <value nybble="8" title="Unknown Value 8" comment="0, 1, 2, 9 (Uses 0, 1, 2 in 3-21) (Unknown use in 5-24, check 5-21)"/>
+    <value nybble="5-6" title="Starting Node"/>
+    <value nybble="7" title="Path ID"/>
+    <list nybble="8" title="Unknown List 8">
+      <entry value="0">Haunted A (Single)</entry>
+      <entry value="1">Haunted A (Repeating)</entry>
+      <entry value="2">????</entry>
+      <entry value="8">Normal (Single)</entry>
+      <entry value="9">Normal (Repeating)</entry>
+    </list>
     <value nybble="11" title="Movement ID" comment="Link with other Movement IDs to make those sprites move."/>
   </sprite>
   <sprite id="160" name="Unused Platform - &quot;En_Rail_Poly_Child&quot;" notes="Likely links to Movement Controller 159 to operate on paths.">
@@ -1443,12 +1476,23 @@
   <sprite id="165" name="Border of Level Related - Right Side (2)">
     <value nybble="12" title="Unknown Value 5-12" comment="Flag x04, &quot;En_Max_Ue2_Right&quot; Similar to 163, unknown differences"/>
   </sprite>
-  <sprite id="166" name="Path Controlled Block Train">
-    <value nybble="5" title="Unknown Value 5" comment="2 - May be &quot;Icy&quot;"/>
-    <value nybble="7" title="Unknown Value 7" comment="1 - May be &quot;Icy&quot;"/>
-    <value nybble="10" title="Unknown Value 10" comment="1, 2 BLOCK 13 (one of these)"/>
-    <value nybble="11" title="Unknown Value 11" comment="1, 2 BLOCK 13 (one of these)"/>
-    <value nybble="12" title="Unknown Value 12" comment="F"/>
+  <sprite id="166" name="Path Controlled Block Train" notes="Options: Does nothing&#13;&#10;Speed: Does nothing&#13;&#10;Accel: Does nothing&#13;&#10;Delay: Does nothing&#13;&#10;Placement: Near the Starting Node&#13;&#10;Angles: 45/90 degree lines only, see below.&#13;&#10;&#13;&#10;Distance from starting Path Node to the first subsequent Path Node must be a flat line, AS WELL AS be able to accommodate the full length of the train. After that, any segment length, as well as diagonals, may be used. The Block Train will zigzag until it reaches the height, and then go straight, so a 45 angle is recommended if not having it travel in a straight line.">
+    <list nybble="5" title="End Animation" comment="When the Block Train reaches the end of its path, it will deactivate, and do this.">
+      <entry value="0">Stop</entry>
+      <entry value="1">Fall (Via front square)</entry>
+      <entry value="2">Fall (Piece by piece)</entry>
+      <entry value="3">Fall (All at once)</entry>
+      <entry value="4">Crashes Game</entry>
+    </list>
+    <value nybble="7" title="Unknown Value 7" comment="Used Values: 1, No visible change."/>
+    <value nybble="8-9" title="Starting Node" comment="Node that the Block Train starts on. Useful for, say, using it alongside auto-scroll."/>
+    <list nybble="10" title="Speed" comment="This value affects the speed of the train, but it seems to crash when some values are used.">
+      <entry value="0">Very Slow</entry>
+      <entry value="1">Slow</entry>
+      <entry value="2">Fast</entry>
+    </list>
+    <value nybble="11" title="Path ID" comment="Path ID the Block Train will use"/>
+    <value nybble="12" title="Length" comment="4 + Value"/>
   </sprite>
   <sprite id="167" name="NO ASSIGNED FUNCTION"/>
   <sprite id="168" name="NO ASSIGNED FUNCTION"/>
@@ -1554,6 +1598,7 @@
     <value nybble="10" title="Width" comment="1 + Value"/>
     <value nybble="11" title="Height" comment="1 + Value"/>
     <value nybble="12" title="Exit ID" comment="This exit point's destination will be used for the warp."/>
+    <value nybble="1-2" title="Triggering Event ID" comment="If the specified event is active or is 0, the Special Exit Controller will warp."/>
   </sprite>
   <sprite id="180" name="Cheep-Chomp"/>
   <sprite id="181" name="Cheep Cheep Spawn Area - Jumping">
@@ -1640,7 +1685,18 @@
     </list>
   </sprite>
   <sprite id="195" name="Huckit Crab">
-    <value nybble="12" title="Possible Value 12" comment="[S] 0-15"/>
+    <list nybble="12" title="Type" comment="Very weird sprite.">
+      <entry value="0">Face Left</entry>
+      <entry value="1">Face Right</entry>
+      <entry value="2">Stationary Projectile</entry>
+      <entry value="4">Very Fast Backwards Projectile</entry>
+      <entry value="6">Very slow projectile</entry>
+      <entry value="7">Very slow backwards projectile</entry>
+      <entry value="9">Very fast projectile</entry>
+      <entry value="12">Fast Projectile Face Left</entry>
+      <entry value="13">Fast Projectile Face Right</entry>
+      <entry value="15">Backwards Fast Projectile </entry>
+    </list>
   </sprite>
   <sprite id="196" name="Fishbones" notes="Fishbones does not function in anything but normal non-locational water. (138, no Location ID set)">
     <value nybble="10" title="Possible Value 10" comment="[S] 0-15, No visible change"/>
@@ -1792,6 +1848,9 @@
       <entry value="14">Mushroom (if small)</entry>
       <entry value="15">Ice Flower</entry>
     </list>
+    <checkbox nybble="8" title="Appears Behind Other Sprites" comment="Check to make it appear behind other sprites/objects on layer 1"/>
+    <checkbox nybble="9" title="Starts Going Left" comment="Starts on a line by going left instead of right"/>
+    <checkbox nybble="10" title="Follows Line" comment="Check to make it follow Pa4 Lines"/>
   </sprite>
   <sprite id="208" name="Question Block - Unused">
     <value nybble="5-6" title="Movement ID" comment="Link to Movement Controllers to make this sprite move with them."/>
@@ -1870,6 +1929,9 @@
       <entry value="14">Mushroom (if small)</entry>
       <entry value="15">Ice Flower</entry>
     </list>
+    <checkbox nybble="8" title="Place Behind Other Sprites" comment="Check to make it appear behind other sprites and objects on layer 1"/>
+    <checkbox nybble="10" title="Follows Line" comment="Check to make it follow Pa4 Lines"/>
+    <checkbox nybble="9" title="Starts Going Left" comment="Check to make it start going left instead of right"/>
   </sprite>
   <sprite id="210" name="Incomplete Sprite - &quot;Tarzan_Rope&quot;" notes="Flag x08 - Seems to have no functioning data associated with it. Presumed incomplete."/>
   <sprite id="211" name="Boss Controller - Bowser Jr. 1st Battle"/>
@@ -1940,7 +2002,7 @@
   </sprite>
   <sprite id="217" name="Fire Chomp Spawn Area">
     <value nybble="10" title="Unknown Value 10" comment="0, 1"/>
-    <value nybble="11" title="Unknown Value 11" comment="A, C"/>
+    <value nybble="11" title="Spawn delay" comment="It takes longer for the chomp to spawn the higer the value is."/>
     <value nybble="12" title="Location ID"/>
   </sprite>
   <sprite id="218" name="Invisible Block - &quot;Ac_Obj_Clear_Block&quot;">
@@ -2014,8 +2076,8 @@
   <sprite id="224" name="Jumbo Ray">
     <value nybble="8" title="Unknown Value 8" comment="0-7"/>
     <value nybble="9" title="Unknown Value 9" comment="0-5, 8-E"/>
-    <value nybble="10" title="Unknown Value 10" comment="0, 1"/>
-    <value nybble="11" title="Unknown Value 11" comment="0, 1, 2"/>
+    <value nybble="10" title="Direction" comment="The direction the Ray will fly."/>
+    <value nybble="11" title="Altitude?" comment="0, 1, 2"/>
     <value nybble="12" title="Unknown Value 12" comment="1, 2, 8, 9"/>
   </sprite>
   <sprite id="225" name="Floating Coin" notes="Place this coin in/under the water, and it will spawn floating at the top. It only works on non-location based water."/>
@@ -2113,7 +2175,7 @@
     <value nybble="12" title="Coin ID" comment="Links this coin to 459"/>
   </sprite>
   <sprite id="238" name="Foo (Cloud Blower)">
-    <checkbox nybble="12" title="Unknown Value 12"/>
+    <checkbox nybble="12" title="No cloud" comment="When you check this, it won't blow out anything."/>
   </sprite>
   <sprite id="239" name="Incomplete Sprite - &quot;Mist_Intermittent&quot;" notes="Supposed to be a Cloud Pillar, but seems to be incomplete."/>
   <sprite id="240" name="Giant Wiggler">
@@ -2588,7 +2650,7 @@
     </list>
   </sprite>
   <sprite id="297" name="Line Controlled Dragon Coaster">
-    <value nybble="5" title="Unknown Value 5" comment="[S] 0-15"/>
+    <value nybble="5" title="Pair ID" comment="Any other Dragon Coasters with the same Pair ID and have the checkbox below unticked will activate when the one with the below checkbox is activated. Do not have more than 1 with the checkbox per Pair ID"/>
     <value nybble="10" title="Speed" comment="Increase the speed."/>
     <checkbox nybble="11" title="Start moving when jumped on" comment="Coaster will start moving when all players on screen are on the coaster."/>
     <value nybble="12" title="Length" comment="0-7 Value, Increase the number of attached platforms."/>
@@ -2662,20 +2724,20 @@
       <entry value="2">Yes</entry>
     </list>
     <value nybble="8-9" title="Exit ID"/>
-    <checkbox nybble="10" title="Unknown Value 10" comment="[S] 0-1"/>
+    <checkbox nybble="10" title="Rotating direction"/>
     <list nybble="11" title="Orientation" comment="Pipe is overlapping a cannon when on ceiling">
       <entry value="0">On Ground</entry>
       <entry value="1">On Ceiling</entry>
     </list>
-    <list nybble="12" title="Rotation???" comment="[S] 0-7">
-      <entry value="0">Clockwise</entry>
-      <entry value="1">Counter Clockwise</entry>
-      <entry value="2">???</entry>
-      <entry value="3">???</entry>
-      <entry value="4">???</entry>
-      <entry value="5">???</entry>
-      <entry value="6">???</entry>
-      <entry value="7">???</entry>
+    <list nybble="12" title="Pipe Position at Spawn" comment="The pipe's position when it first appears on the screen.">
+      <entry value="0">Up</entry>
+      <entry value="1">Up-Right</entry>
+      <entry value="2">Right</entry>
+      <entry value="3">Down-Right</entry>
+      <entry value="4">Down</entry>
+      <entry value="5">Down-Left</entry>
+      <entry value="6">Left</entry>
+      <entry value="7">Up-Left</entry>
     </list>
   </sprite>
   <sprite id="302" name="Incomplete Sprite - &quot;En_Gake_Noko&quot;" notes="No settings data, sprite seems to be incomplete. Gake -&gt; Only use of term, Nokonoko -&gt; Koopa"/>
@@ -2842,8 +2904,19 @@
     <value nybble="6" title="Greater Radius Distance" comment="Sets the radius of the circle. If greater than the Lesser Radius, the circle will expand and shrink."/>
     <value nybble="7" title="Lesser Radius Distance" comment="Must be less than or equal to the Greater Radius."/>
     <value nybble="8" title="# of Ghosts" comment="1 + Value"/>
-    <value nybble="9" title="Unknown Value 9" comment="[S] 0-15, No visible change"/>
-    <list nybble="10" title="Unknown Value 10" comment="[S] 0-15"/>
+    <value nybble="9" title="Shrink/Expand Delay" comment="Delay before shirinking/expanding. This value only affects the sprite when the radius values aren't equal."/>
+    <list nybble="10" title="Shrink/Expand Effects" comment="This value only affects the sprite when the radius values aren't equal.">
+      <entry value="0">Slow</entry>
+      <entry value="1">Normal</entry>
+      <entry value="2">Fast</entry>
+      <entry value="3">Doesn't pulse</entry>
+      <entry value="4">Graphical Glitch</entry>
+      <entry value="5">Very Slow</entry>
+      <entry value="8">Change the radius instantly</entry>
+      <entry value="9">Slow-ish</entry>
+      <entry value="11">Vanish</entry>
+      <entry value="15">Go offscreen</entry>
+    </list>
     <list nybble="11" title="Rotational Speed">
       <entry value="0">Slow</entry>
       <entry value="1">Normal</entry>
@@ -3064,7 +3137,7 @@
     <checkbox nybble="12" title="Moves Clockwise"/>
   </sprite>
   <sprite id="361" name="Rotation Controlled Crystal Block">
-    <checkbox nybble="6" title="Unknown Value 6" comment="No visible change, always set as 'on'."/>
+    <checkbox nybble="6" title="Unknown Value 6" comment="No visible change, always set as \'on\'."/>
     <value nybble="8" title="Z-Order" comment="Controlls depth of block to prevent overlapping."/>
     <list nybble="10" title="Size" comment="Multiple blocks that are placed with proper spacing will overlap almost seamlessly">
       <entry value="0">12x10 Block</entry>
@@ -3108,7 +3181,7 @@
   </sprite>
   <sprite id="367" name="Line Controlled Rotating Pink Block">
     <value nybble="3-4" title="Target Event ID" comment="Stepping on this pink block will trigger this event."/>
-    <checkbox nybble="8" title="Unknown Value 8" comment="[S] 0-1"/>
+    <checkbox nybble="8" title="Bounce back" comment="If checked, the object will go back the path when it hits a stopper."/>
     <value nybble="9" title="Unknown Value 9" comment="[S] 0-15"/>
     <value nybble="10" title="Unknown Value 10" comment="[S] 0-15"/>
     <value nybble="11" title="Unknown Value 11" comment="0,7 (7 used only in 2-06 A1)"/>

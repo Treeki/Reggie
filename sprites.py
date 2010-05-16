@@ -1239,6 +1239,17 @@ def InitIceBro(sprite): # 272
     sprite.image = ImageCache['IceBro']
     return (-5,-23,26,39)
 
+def InitCastleGear(sprite):
+    global ImageCache
+    if 'CastleGearL' not in ImageCache or 'CastleGearS' not in ImageCache:
+        LoadCastleGears()
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    isBig = (ord(sprite.spritedata[4]) & 0xF) == 1
+    sprite.image = ImageCache['CastleGearL'] if isBig else ImageCache['CastleGearS']
+    return (-((sprite.image.width()/2.0)*(2.0/3.0)), -((sprite.image.height()/2.0)*(2.0/3.0)), sprite.image.width()*(2.0/3.0), sprite.image.height()*(2.0/3.0))
+    
+    
 def InitGiantIceBlock(sprite): # 280
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -2097,6 +2108,7 @@ Initialisers = {
     267: InitTiltGrate,
     269: InitParabomb,
     272: InitIceBro,
+    274: InitCastleGear,
     276: InitDoor,
     277: InitDoor,
     278: InitDoor,
@@ -3451,6 +3463,11 @@ def LoadMinigameStuff():
     ImageCache['MGCannon'] = QtGui.QPixmap('reggiedata/sprites/mg_cannon.png')
     ImageCache['MGChest'] = QtGui.QPixmap('reggiedata/sprites/mg_chest.png')
     ImageCache['MGToad'] = QtGui.QPixmap('reggiedata/sprites/toad.png')
+
+def LoadCastleGears():
+    global ImageCache
+    ImageCache['CastleGearL'] = QtGui.QPixmap('reggiedata/sprites/castle_gear_large.png')
+    ImageCache['CastleGearS'] = QtGui.QPixmap('reggiedata/sprites/castle_gear_small.png')
 
 
 # ---- Custom Painters ----
