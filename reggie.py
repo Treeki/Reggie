@@ -8253,7 +8253,7 @@ class ReggieWindow(QtGui.QMainWindow):
         """Handles a new sprite being chosen"""
         global CurrentSprite
         CurrentSprite = type
-        if type != 1000:
+        if type != 1000 and type >= 0:
             self.defaultDataEditor.setSprite(type)
             self.defaultDataEditor.data = '\0\0\0\0\0\0\0\0\0\0'
             self.defaultDataEditor.update()

@@ -1205,6 +1205,18 @@ def InitFallingIcicle(sprite): # 265
     sprite.customPainter = PaintGenericObject
     return (0,0,16,16)
 
+def InitRotatingChainLink(sprite): # 266
+    global ImageCache
+    if 'RotatingChainLink' not in ImageCache:
+        ImageCache['RotatingChainLink'] = QtGui.QPixmap('reggiedata/sprites/rotating_chainlink.png')
+    
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['RotatingChainLink']
+    im = sprite.image
+    return (-((2.0/3.0)*(im.width()/2.0-12.0)), -((2.0/3.0)*(im.height()/2.0-12.0)), (2.0/3.0)*im.width(), (2.0/3.0)*im.height())
+    
+
 def InitTiltGrate(sprite): # 267
     global ImageCache
     if 'TiltGrateU' not in ImageCache:
@@ -1239,6 +1251,19 @@ def InitIceBro(sprite): # 272
     sprite.image = ImageCache['IceBro']
     return (-5,-23,26,39)
 
+def InitCastleGear(sprite):
+    global ImageCache
+    if 'CastleGearL' not in ImageCache or 'CastleGearS' not in ImageCache:
+        LoadCastleGears()
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeCastleGear
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    isBig = (ord(sprite.spritedata[4]) & 0xF) == 1
+    sprite.image = ImageCache['CastleGearL'] if isBig else ImageCache['CastleGearS']
+    return (-(((sprite.image.width()/2.0)-12)*(2.0/3.0)), -(((sprite.image.height()/2.0)-12)*(2.0/3.0)), sprite.image.width()*(2.0/3.0), sprite.image.height()*(2.0/3.0))
+    
+    
 def InitGiantIceBlock(sprite): # 280
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -1547,6 +1572,30 @@ def InitRockyWrench(sprite): # 352
 def InitRollingHillWithPipe(sprite): # 355, 360
     sprite.aux = AuxiliaryCircleOutline(sprite, 32*16)
     return (0,0,16,16)
+
+def InitBrownBlock(sprite):
+    global ImageCache
+    if 'BrownBlockTL' not in ImageCache:
+        ImageCache['BrownBlockTL'] = QtGui.QPixmap('reggiedata/sprites/brown_block_tl.png')
+        ImageCache['BrownBlockTM'] = QtGui.QPixmap('reggiedata/sprites/brown_block_tm.png')
+        ImageCache['BrownBlockTR'] = QtGui.QPixmap('reggiedata/sprites/brown_block_tr.png')
+        ImageCache['BrownBlockML'] = QtGui.QPixmap('reggiedata/sprites/brown_block_ml.png')
+        ImageCache['BrownBlockMM'] = QtGui.QPixmap('reggiedata/sprites/brown_block_mm.png')
+        ImageCache['BrownBlockMR'] = QtGui.QPixmap('reggiedata/sprites/brown_block_mr.png')
+        ImageCache['BrownBlockBL'] = QtGui.QPixmap('reggiedata/sprites/brown_block_bl.png')
+        ImageCache['BrownBlockBM'] = QtGui.QPixmap('reggiedata/sprites/brown_block_bm.png')
+        ImageCache['BrownBlockBR'] = QtGui.QPixmap('reggiedata/sprites/brown_block_br.png')
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeBrownBlock
+    sprite.customPaint = True
+    sprite.customPainter = PaintBrownBlock
+    if(sprite.type == 354): return (0,0,16,16)
+    sprite.aux = AuxiliaryTrackObject(sprite, 16, 16, AuxiliaryTrackObject.Horizontal)
+    return (0,0,16,16)
+    
+
+
 
 def InitFruit(sprite): # 357
     sprite.dynamicSize = True
@@ -1980,6 +2029,7 @@ Initialisers = {
     26: InitUpsideDownSpiny,
     27: InitUnusedVertStoneBlock,
     28: InitUnusedHorzStoneBlock,
+    30: InitOldStoneBlock,
     31: InitVertMovingPlatform,
     32: InitStarCoin,
     40: InitQuestionSwitch,
@@ -2094,9 +2144,11 @@ Initialisers = {
     263: InitWaterPiranha,
     264: InitWalkingPiranha,
     265: InitFallingIcicle,
+    266: InitRotatingChainLink,
     267: InitTiltGrate,
     269: InitParabomb,
     272: InitIceBro,
+    274: InitCastleGear,
     276: InitDoor,
     277: InitDoor,
     278: InitDoor,
@@ -2127,7 +2179,9 @@ Initialisers = {
     345: InitChainHolder,
     352: InitRockyWrench,
     353: InitPipe,
+    354: InitBrownBlock,
     355: InitRollingHillWithPipe,
+    356: InitBrownBlock,
     357: InitFruit,
     359: InitWallLantern,
     360: InitRollingHillWithPipe,
@@ -2386,11 +2440,13 @@ def SizeKoopaParatroopa(sprite): # 58
     else:
         sprite.image = ImageCache['ParakoopaR']
 
-def SizeOldStoneBlock(sprite): # 81, 82, 83, 84, 85, 86
+def SizeOldStoneBlock(sprite): # 30, 81, 82, 83, 84, 85, 86
     size = ord(sprite.spritedata[5])
     height = (size & 0xF0) >> 4
     width = size & 0xF
-    
+    if sprite.type == 30:
+        height = 1 if height == 0 else height
+        width = 1 if width == 0 else width
     sprite.xsize = width * 16 + 16
     sprite.ysize = height * 16 + 16
     
@@ -2406,6 +2462,8 @@ def SizeOldStoneBlock(sprite): # 81, 82, 83, 84, 85, 86
         sprite.xsize += 16
     if type == 85 or type == 86: # bottom spikes
         sprite.ysize += 16
+    
+    
     
     
     # now set up the track
@@ -2814,6 +2872,17 @@ def SizeFallingIcicle(sprite): # 265
         sprite.image = ImageCache['IcicleLarge']
         sprite.ysize = 36
 
+
+def SizeCastleGear(sprite):
+    isBig = (ord(sprite.spritedata[4]) & 0xF) == 1
+    sprite.image = ImageCache['CastleGearL'] if isBig else ImageCache['CastleGearS']
+    sprite.xoffset = -(((sprite.image.width()/2.0)-12)*(2.0/3.0))
+    sprite.yoffset = -(((sprite.image.height()/2.0)-12)*(2.0/3.0))
+    sprite.xsize = sprite.image.width()*(2.0/3.0)
+    sprite.ysize = sprite.image.height()*(2.0/3.0)   
+    
+    
+    
 def SizeGiantIceBlock(sprite): # 280
     item = ord(sprite.spritedata[5]) & 3
     if item == 3: item = 0
@@ -3073,7 +3142,36 @@ def SizeFuzzy(sprite): # 343
         sprite.ysize = 52
         sprite.image = ImageCache['FuzzyGiant']
     
+def SizeBrownBlock(sprite): # 356
+    size = ord(sprite.spritedata[5])
+    height = (size & 0xF0) >> 4
+    width = size & 0xF
+    height = 1 if height == 0 else height
+    width = 1 if width == 0 else width
+    sprite.xsize = width * 16 + 16
+    sprite.ysize = height * 16 + 16
+    
+    type = sprite.type
+    # now set up the track
+    if(type == 354): return
+    direction = ord(sprite.spritedata[2]) & 3
+    distance = (ord(sprite.spritedata[4]) & 0xF0) >> 4
+    
+    if direction <= 1: # horizontal
+        sprite.aux.direction = 1
+        sprite.aux.SetSize(sprite.xsize + (distance * 16), sprite.ysize)
+    else: # vertical
+        sprite.aux.direction = 2
+        sprite.aux.SetSize(sprite.xsize, sprite.ysize + (distance * 16))
+    
+    if direction == 0 or direction == 3: # right, down
+        sprite.aux.setPos(0,0)
+    elif direction == 1: # left
+        sprite.aux.setPos(-distance * 24,0)
+    elif direction == 2: # up
+        sprite.aux.setPos(0,-distance * 24)
 
+        
 def SizeFruit(sprite): # 357
     style = ord(sprite.spritedata[5]) & 1
     if style == 0:
@@ -3452,6 +3550,11 @@ def LoadMinigameStuff():
     ImageCache['MGChest'] = QtGui.QPixmap('reggiedata/sprites/mg_chest.png')
     ImageCache['MGToad'] = QtGui.QPixmap('reggiedata/sprites/toad.png')
 
+def LoadCastleGears():
+    global ImageCache
+    ImageCache['CastleGearL'] = QtGui.QPixmap('reggiedata/sprites/castle_gear_large.png')
+    ImageCache['CastleGearS'] = QtGui.QPixmap('reggiedata/sprites/castle_gear_small.png')
+
 
 # ---- Custom Painters ----
 def PaintNothing(sprite, painter):
@@ -3679,6 +3782,31 @@ def PaintBoltPlatform(sprite, painter):
     painter.drawPixmap(0, 0, ImageCache['BoltPlatformL'])
     painter.drawTiledPixmap(24, 3, sprite.xsize*1.5 - 48, 24, ImageCache['BoltPlatformM'])
     painter.drawPixmap(sprite.xsize*1.5 - 24, 0, ImageCache['BoltPlatformR'])
+
+def PaintBrownBlock(sprite, painter):
+    blockX = 0
+    blockY = 0
+    type = sprite.type
+    width = sprite.xsize*1.5
+    height = sprite.ysize*1.5
+    
+    column2x = blockX + 24
+    column3x = blockX + width - 24
+    row2y = blockY + 24
+    row3y = blockY + height - 24
+    
+    painter.drawPixmap(blockX, blockY, ImageCache['BrownBlockTL'])
+    painter.drawTiledPixmap(column2x, blockY, width-48, 24, ImageCache['BrownBlockTM'])
+    painter.drawPixmap(column3x, blockY, ImageCache['BrownBlockTR'])
+    
+    painter.drawTiledPixmap(blockX, row2y, 24, height-48, ImageCache['BrownBlockML'])
+    painter.drawTiledPixmap(column2x, row2y, width-48, height-48, ImageCache['BrownBlockMM'])
+    painter.drawTiledPixmap(column3x, row2y, 24, height-48, ImageCache['BrownBlockMR'])
+    
+    painter.drawPixmap(blockX, row3y, ImageCache['BrownBlockBL'])
+    painter.drawTiledPixmap(column2x, row3y, width-48, 24, ImageCache['BrownBlockBM'])
+    painter.drawPixmap(column3x, row3y, ImageCache['BrownBlockBR'])
+
 
 def PaintPipe(sprite, painter):
     colour = sprite.colour
