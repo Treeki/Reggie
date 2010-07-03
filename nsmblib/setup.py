@@ -3,11 +3,11 @@ from distutils.extension import Extension
 
 setup(
   name='nsmblib',
-  version='0.4',
+  version='0.5',
   ext_modules=[
     Extension(
       'nsmblib',
-      ['nsmblibmodule.c'],
+      ['nsmblibmodule.c', 'list.c'],
     )
   ]
 )

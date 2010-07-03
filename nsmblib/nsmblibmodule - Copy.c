@@ -338,15 +338,18 @@ static PyObject *nsmblib_compress11LZS(PyObject *self, PyObject *args) {
     int i, ret1, ret2; // used in the compression loop
     LZDict dict;
     
+    PySys_WriteStdout("test started\n");
     /* get the arguments */
     if (!PyArg_ParseTuple(args, "s#", &data, &datalength))
         return NULL;
+    PySys_WriteStdout("got args, len is %d\n", datalength);
     
     /* allocate a buffer to start with */
     bufSize = datalength;
     buffer = (char*)PyMem_Malloc(bufSize);
     if (buffer == NULL)
         return PyErr_NoMemory();
+    PySys_WriteStdout("alloc'd\n");
     
     src_ptr = (u8*)data;
     dest_ptr = buffer;
@@ -423,11 +426,15 @@ static PyObject *nsmblib_compress11LZS(PyObject *self, PyObject *args) {
 		*flagpos = flag;
     }
     
+    PySys_WriteStdout("freeing lzdict\n");
     LZDict_free(&dict);
     
     /* return it! */
+    PySys_WriteStdout("done. creating string\n");
     retvalue = PyString_FromStringAndSize((const char*)buffer, dest_ptr - buffer);
+    PySys_WriteStdout("string created\n");
     PyMem_Free(buffer);
+    PySys_WriteStdout("buffer freed\n");
     
     return retvalue;
 }

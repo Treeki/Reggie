@@ -1482,7 +1482,10 @@ class LevelUnit():
         self.SaveLocations() # block 11
         self.SavePaths()
         warnings.resetwarnings()
+        
         rdata = self.SaveReggieInfo()
+        if len(rdata) % 4 != 0:
+			rdata += '\0' * (4 - (len(rdata) % 4))
         
         # save the main course file
         # we'll be passing over the blocks array two times
@@ -3909,7 +3912,7 @@ class EntranceEditorWidget(QtGui.QWidget):
         self.entranceType = QtGui.QComboBox()
         LoadEntranceNames()
         self.entranceType.addItems(EntranceTypeNames)
-        self.entranceType.setToolTip('Must be different from all other IDs')
+        self.entranceType.setToolTip('Sets how the entrance/exit behaves')
         self.entranceType.activated.connect(self.HandleEntranceTypeChanged)
         
         self.destArea = QtGui.QSpinBox()
