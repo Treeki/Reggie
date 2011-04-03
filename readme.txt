@@ -1,4 +1,4 @@
-=== Reggie! Level Editor (Release 2) ===
+=== Reggie! Level Editor (Release 3) ===
 
 Advanced level editor for New Super Mario Bros. Wii, created by Treeki and
 Tempus using Python, PyQt and Wii.py.
@@ -7,10 +7,18 @@ Homepage: http://www.rvlution.net/reggie/
 Support:  http://www.rvlution.net/forums/
 
 Source code package for this release:
-- http://www.rvlution.net/reggie/downloads/Reggie_r2_source.zip
+- http://www.rvlution.net/reggie/downloads/Reggie_r3_source.zip
 
 
 === Changelog: ===
+
+Release 3: (April 2nd, 2011)
+- Unicode is now supported in sprite names within spritedata.xml
+    (thanks to 'NSMBWHack' on rvlution.net for the bug report)
+- Unicode is now supported in sprite categories.
+- Sprites 274, 354 and 356 now render using images.
+- Other various bug fixes.
+
 
 Release 2: (April 2nd, 2010)
 - Bug with Python 2.5 compatibility fixed.
