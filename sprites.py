@@ -1893,6 +1893,12 @@ def InitPalmTree(sprite): # 424
     sprite.customPainter = PaintGenericObject
     return (-24.5,0,67,16)
 
+def InitJellybeam(sprite): # 425
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['Jellybeam']
+    return (-6,0,28,28)
+
 def InitToad(sprite): # 432
     global ImageCache
     if 'Toad' not in ImageCache:
@@ -2338,6 +2344,7 @@ Initialisers = {
     422: InitBlock,
     423: InitBlock,
     424: InitPalmTree,
+    425: InitJellybeam,
     432: InitToad,
     434: InitWarpCannon,
     437: InitPurplePole,
@@ -3563,6 +3570,7 @@ def LoadBasicSuite():
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
     ImageCache['Fishbones'] = QtGui.QPixmap('reggiedata/sprites/fishbones.png')
     ImageCache['SpinyCheep'] = QtGui.QPixmap('reggiedata/sprites/spiny_cheep.png'
+    ImageCache['Jellybeam'] = QtGui.QPixmap('reggiedata/sprites/jellybeam.png')
     ImageCache['CheepChomp'] = QtGui.QPixmap('reggiedata/sprites/cheep_chomp.png')
     ImageCache['Urchin'] = QtGui.QPixmap('reggiedata/sprites/urchin.png')
     ImageCache['MegaUrchin'] = QtGui.QPixmap('reggiedata/sprites/mega_urchin.png')
