@@ -1136,6 +1136,19 @@ def InitSpringBlock(sprite): # 223
     
     return (0,0,16,16)
 
+def InitJumboRay(sprite): # 224
+    global ImageCache
+    if 'JumboRay' not in ImageCache:
+        Ray = QtGui.QImage('reggiedata/sprites/jumbo_ray.png')
+        ImageCache['JumboRayL'] = QtGui.QPixmap.fromImage(Ray)
+        ImageCache['JumboRayR'] = QtGui.QPixmap.fromImage(Ray.mirrored(True, False))
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeJumboRay
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (0,0,171,79)
+
 def InitExtendShroom(sprite): # 228
     global ImageCache
     if 'ExtendShroomL' not in ImageCache:
@@ -2209,6 +2222,7 @@ Initialisers = {
     212: InitRollingHill,
     221: InitBlock,
     223: InitSpringBlock,
+    224: InitJumboRay,
     228: InitExtendShroom,
     230: InitBramball,
     231: InitWiggleShroom,
@@ -2864,6 +2878,18 @@ def SizeSpringBlock(sprite): # 223
         sprite.image = ImageCache['SpringBlock1']
     else:
         sprite.image = ImageCache['SpringBlock2']
+
+def SizeJumboRay(sprite): # 224
+    flyleft = ord(sprite.spritedata[4]) & 15
+    
+    if flyleft == 1:
+        sprite.image = ImageCache['JumboRayL']
+    else:
+        sprite.xoffset = -152
+        sprite.yoffset = 0
+        sprite.xsize = 171
+        sprite.ysize = 79
+        sprite.image = ImageCache['JumboRayR']
 
 def SizeExtendShroom(sprite): # 228
     props = ord(sprite.spritedata[5])
