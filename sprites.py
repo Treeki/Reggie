@@ -1077,6 +1077,17 @@ def InitFishbones(sprite): # 196
     sprite.image = ImageCache['Fishbones']
     return (0,-2,28,18)
 
+def InitClam(sprite): # 197
+    global ImageCache
+    if 'Clam0' not in ImageCache:
+        LoadClams()
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeClam
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (-28,-50,74,70)
+
 def InitIcicle(sprite): # 201
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -2185,6 +2196,7 @@ Initialisers = {
     194: InitMegaUrchin,
     195: InitHuckit,
     196: InitFishbones,
+    197: InitClam,
     198: InitGiantgoomba,
     199: InitMegagoomba,
     200: InitMicrogoomba,
@@ -2758,6 +2770,15 @@ def SizeHuckit(sprite): # 195
         sprite.xoffset = -14
     
     sprite.image = ImageCache['Huckit%s' % imgDirection]
+
+def SizeClam(sprite): # 197
+    upsidedown = ord(sprite.spritedata[4]) & 15
+    contents = ord(sprite.spritedata[5]) & 15
+    
+    if upsidedown == 1 and contents == 4:
+        sprite.image = ImageCache['ClamPSwitchU']
+    else:
+        sprite.image = ImageCache['Clam%d' % contents]
 
 def SizeIcicle(sprite): # 201
     size = ord(sprite.spritedata[5]) & 1
@@ -3587,6 +3608,12 @@ def LoadMovableItems():
     ImageCache['GlowBlock'] = QtGui.QPixmap('reggiedata/sprites/glow_block.png')
     ImageCache['PropellerBlock'] = QtGui.QPixmap('reggiedata/sprites/propeller_block.png')
     ImageCache['Spring'] = QtGui.QPixmap('reggiedata/sprites/spring.png')
+
+def LoadClams():
+    global ImageCache
+    ImageCache['ClamPSwitchU'] = QtGui.QPixmap('reggiedata/sprites/clam_5.png')
+    for i in xrange(8):
+        ImageCache['Clam%d' % i] = QtGui.QPixmap('reggiedata/sprites/clam_%d.png' % i)
 
 def LoadCrabs():
     global ImageCache
