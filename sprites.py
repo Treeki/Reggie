@@ -1835,6 +1835,12 @@ def InitLemmyBall(sprite): # 394
     sprite.image = ImageCache['LemmyBall']
     return (-6,0,29,29)
 
+def InitSpinyCheep(sprite): # 395
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['SpinyCheep']
+    return (-1,-2,19,19)
+
 def InitBlock(sprite): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     sprite.dynamicSize = True
     sprite.dynSizer = SizeBlock
@@ -2323,6 +2329,7 @@ Initialisers = {
     391: InitGlowBlock,
     393: InitPropellerBlock,
     394: InitLemmyBall,
+    395: InitSpinyCheep,
     402: InitBlock,
     403: InitBlock,
     413: InitWendyRing,
@@ -3555,6 +3562,7 @@ def LoadBasicSuite():
     ImageCache['Goomba'] = QtGui.QPixmap('reggiedata/sprites/goomba.png')
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
     ImageCache['Fishbones'] = QtGui.QPixmap('reggiedata/sprites/fishbones.png')
+    ImageCache['SpinyCheep'] = QtGui.QPixmap('reggiedata/sprites/spiny_cheep.png'
     ImageCache['CheepChomp'] = QtGui.QPixmap('reggiedata/sprites/cheep_chomp.png')
     ImageCache['Urchin'] = QtGui.QPixmap('reggiedata/sprites/urchin.png')
     ImageCache['MegaUrchin'] = QtGui.QPixmap('reggiedata/sprites/mega_urchin.png')
