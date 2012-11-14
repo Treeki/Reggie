@@ -982,6 +982,12 @@ def InitRotationControllerSpinning(sprite): # 149
     sprite.setZValue(100000)
     return (0,0,16,16)
 
+def InitPuffer(sprite): # 151
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['Puffer']
+    return (-16,-18,58,54)
+
 def InitRedCoinRing(sprite): # 156
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
@@ -2132,6 +2138,7 @@ Initialisers = {
     147: InitCoin,
     148: InitSpring,
     149: InitRotationControllerSpinning,
+    151: InitPuffer,
     155: InitStarCoin,
     156: InitRedCoinRing,
     172: InitScrewMushroom,
@@ -3379,6 +3386,7 @@ def LoadBasicSuite():
     ImageCache['RedCoinRing'] = QtGui.QPixmap('reggiedata/sprites/redcoinring.png')
     ImageCache['Goomba'] = QtGui.QPixmap('reggiedata/sprites/goomba.png')
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
+    ImageCache['Puffer'] = QtGui.QPixmap('reggiedata/sprites/porcu_puffer.png')
     ImageCache['Microgoomba'] = QtGui.QPixmap('reggiedata/sprites/microgoomba.png')
     ImageCache['Giantgoomba'] = QtGui.QPixmap('reggiedata/sprites/giantgoomba.png')
     ImageCache['Megagoomba'] = QtGui.QPixmap('reggiedata/sprites/megagoomba.png')
