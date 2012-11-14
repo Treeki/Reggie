@@ -1199,6 +1199,12 @@ def InitMechaKoopa(sprite): # 232
     sprite.image = ImageCache['Mechakoopa']
     return (-8,-14,30,32)
 
+def InitBulber(sprite): #233
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['Bulber']
+    return (-16,-16,56,42)
+
 def InitPCoin(sprite): # 237
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
@@ -2262,6 +2268,7 @@ Initialisers = {
     230: InitBramball,
     231: InitWiggleShroom,
     232: InitMechaKoopa,
+    233: InitBulber,
     237: InitPCoin,
     238: InitFoo,
     242: InitFallingLedgeBar,
@@ -3569,8 +3576,9 @@ def LoadBasicSuite():
     ImageCache['Goomba'] = QtGui.QPixmap('reggiedata/sprites/goomba.png')
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
     ImageCache['Fishbones'] = QtGui.QPixmap('reggiedata/sprites/fishbones.png')
-    ImageCache['SpinyCheep'] = QtGui.QPixmap('reggiedata/sprites/spiny_cheep.png'
+    ImageCache['SpinyCheep'] = QtGui.QPixmap('reggiedata/sprites/spiny_cheep.png')
     ImageCache['Jellybeam'] = QtGui.QPixmap('reggiedata/sprites/jellybeam.png')
+    ImageCache['Bulber'] = QtGui.QPixmap('reggiedata/sprites/bulber.png')
     ImageCache['CheepChomp'] = QtGui.QPixmap('reggiedata/sprites/cheep_chomp.png')
     ImageCache['Urchin'] = QtGui.QPixmap('reggiedata/sprites/urchin.png')
     ImageCache['MegaUrchin'] = QtGui.QPixmap('reggiedata/sprites/mega_urchin.png')
