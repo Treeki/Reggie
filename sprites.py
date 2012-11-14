@@ -1061,6 +1061,16 @@ def InitMegaUrchin(sprite): # 194
     sprite.image = ImageCache['MegaUrchin']
     return (-40,-46,113,108)
 
+def InitHuckit(sprite): # 195
+    global ImageCache
+    if 'Huckit' not in ImageCache:
+        LoadCrabs() # previously GetCrabs lol
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeHuckit
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (-14,-2,32,19)
+
 def InitIcicle(sprite): # 201
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -2167,6 +2177,7 @@ Initialisers = {
     188: InitMidwayPoint,
     193: InitUrchin,
     194: InitMegaUrchin,
+    195: InitHuckit,
     198: InitGiantgoomba,
     199: InitMegagoomba,
     200: InitMicrogoomba,
@@ -2728,6 +2739,18 @@ def SizeScalePlatform(sprite): # 178
     if maxRopeHeight == 0: sprite.ysize += 8
     
     sprite.xoffset = -((sprite.platformWidth + 3) * 16 / 2)
+
+def SizeHuckit(sprite): # 195
+    type = ord(sprite.spritedata[5]) & 15
+    right = type == 1
+    if right:
+        imgDirection = 'Flipped'
+        sprite.xoffset = 0
+    else:
+        imgDirection = ''
+        sprite.xoffset = -14
+    
+    sprite.image = ImageCache['Huckit%s' % imgDirection]
 
 def SizeIcicle(sprite): # 201
     size = ord(sprite.spritedata[5]) & 1
@@ -3556,6 +3579,12 @@ def LoadMovableItems():
     ImageCache['GlowBlock'] = QtGui.QPixmap('reggiedata/sprites/glow_block.png')
     ImageCache['PropellerBlock'] = QtGui.QPixmap('reggiedata/sprites/propeller_block.png')
     ImageCache['Spring'] = QtGui.QPixmap('reggiedata/sprites/spring.png')
+
+def LoadCrabs():
+    global ImageCache
+    ImageCache['Huckit'] = QtGui.QPixmap('reggiedata/sprites/huckit_crab.png')
+    originalImg = QtGui.QImage('reggiedata/sprites/huckit_crab.png')
+    ImageCache['HuckitFlipped'] = QtGui.QPixmap.fromImage(originalImg.mirrored(True, False))
 
 def LoadIceStuff():
     global ImageCache
