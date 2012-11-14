@@ -1334,6 +1334,18 @@ def InitParabomb(sprite): # 269
     sprite.image = ImageCache['Parabomb']
     return (-2,-16,20,32)
 
+def InitLittleMouser(sprite): # 271
+    global ImageCache
+    if 'LittleMouser0' not in ImageCache:
+        LoadMice()
+    	
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeLittleMouser
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    
+    return (-6,-2,30,18)
+
 def InitIceBro(sprite): # 272
     global ImageCache
     if 'IceBro' not in ImageCache:
@@ -2252,6 +2264,7 @@ Initialisers = {
     266: InitRotatingChainLink,
     267: InitTiltGrate,
     269: InitParabomb,
+    271: InitLittleMouser,
     272: InitIceBro,
     274: InitCastleGear,
     276: InitDoor,
@@ -3020,6 +3033,41 @@ def SizeFallingIcicle(sprite): # 265
         sprite.image = ImageCache['IcicleLarge']
         sprite.ysize = 36
 
+def SizeLittleMouser(sprite): # 271
+    mice = ord(sprite.spritedata[5]) >> 4
+    one = mice == 0
+    two = mice == 1
+    three = mice == 2
+    four = mice == 3
+    direction = ord(sprite.spritedata[5]) & 15
+    if direction == 0:
+        imgDirection = ''
+    else:
+        imgDirection = 'Flipped'
+    
+    sprite.image = ImageCache['LittleMouser%s%d' % (imgDirection, mice)]
+    if imgDirection == '':
+        if one:
+            sprite.xoffset = -6
+            sprite.xsize = 30
+        elif two:
+            sprite.xoffset = -36
+            sprite.xsize = 61
+        elif three:
+            sprite.xoffset = -70
+            sprite.xsize = 95
+        elif four:
+            sprite.xoffset = -103
+            sprite.xsize = 128
+    else:
+        if one:
+            sprite.xsize = 30        
+        elif two:
+            sprite.xsize = 61
+        elif three:
+            sprite.xsize = 95
+        elif four:
+            sprite.xsize = 128
 
 def SizeCastleGear(sprite):
     isBig = (ord(sprite.spritedata[4]) & 0xF) == 1
@@ -3662,6 +3710,12 @@ def LoadClams():
     ImageCache['ClamPSwitchU'] = QtGui.QPixmap('reggiedata/sprites/clam_5.png')
     for i in xrange(8):
         ImageCache['Clam%d' % i] = QtGui.QPixmap('reggiedata/sprites/clam_%d.png' % i)
+
+def LoadMice():
+    for i in xrange(8):
+        ImageCache['LittleMouser%d' % i] = QtGui.QPixmap('reggiedata/sprites/little_mouser_%d.png' % i)
+        originalImg = QtGui.QImage('reggiedata/sprites/little_mouser_%d.png' % i)
+        ImageCache['LittleMouserFlipped%d' % i] = QtGui.QPixmap.fromImage(originalImg.mirrored(True, False))
 
 def LoadCrabs():
     global ImageCache
