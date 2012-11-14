@@ -1071,6 +1071,12 @@ def InitHuckit(sprite): # 195
     sprite.customPainter = PaintGenericObject
     return (-14,-2,32,19)
 
+def InitFishbones(sprite): # 196
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['Fishbones']
+    return (0,-2,28,18)
+
 def InitIcicle(sprite): # 201
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -2178,6 +2184,7 @@ Initialisers = {
     193: InitUrchin,
     194: InitMegaUrchin,
     195: InitHuckit,
+    196: InitFishbones,
     198: InitGiantgoomba,
     199: InitMegagoomba,
     200: InitMicrogoomba,
@@ -3430,6 +3437,7 @@ def LoadBasicSuite():
     ImageCache['RedCoinRing'] = QtGui.QPixmap('reggiedata/sprites/redcoinring.png')
     ImageCache['Goomba'] = QtGui.QPixmap('reggiedata/sprites/goomba.png')
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
+    ImageCache['Fishbones'] = QtGui.QPixmap('reggiedata/sprites/fishbones.png')
     ImageCache['CheepChomp'] = QtGui.QPixmap('reggiedata/sprites/cheep_chomp.png')
     ImageCache['Urchin'] = QtGui.QPixmap('reggiedata/sprites/urchin.png')
     ImageCache['MegaUrchin'] = QtGui.QPixmap('reggiedata/sprites/mega_urchin.png')
