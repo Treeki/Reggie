@@ -1034,6 +1034,12 @@ def InitScalePlatform(sprite): # 178
     sprite.customPainter = PaintScalePlatform
     return (0,-10,150,150)
 
+def InitCheepChomp(sprite): # 180
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['CheepChomp']
+    return (-24,-30,76,66)
+
 def InitMidwayPoint(sprite): # 188
     if 'MidwayFlag' not in ImageCache:
         LoadFlagpole()
@@ -2144,6 +2150,7 @@ Initialisers = {
     172: InitScrewMushroom,
     173: InitGiantFloatingLog,
     178: InitScalePlatform,
+    180: InitCheepChomp,
     182: InitDoor,
     188: InitMidwayPoint,
     198: InitGiantgoomba,
@@ -3386,6 +3393,7 @@ def LoadBasicSuite():
     ImageCache['RedCoinRing'] = QtGui.QPixmap('reggiedata/sprites/redcoinring.png')
     ImageCache['Goomba'] = QtGui.QPixmap('reggiedata/sprites/goomba.png')
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
+    ImageCache['CheepChomp'] = QtGui.QPixmap('reggiedata/sprites/cheep_chomp.png')
     ImageCache['Puffer'] = QtGui.QPixmap('reggiedata/sprites/porcu_puffer.png')
     ImageCache['Microgoomba'] = QtGui.QPixmap('reggiedata/sprites/microgoomba.png')
     ImageCache['Giantgoomba'] = QtGui.QPixmap('reggiedata/sprites/giantgoomba.png')
