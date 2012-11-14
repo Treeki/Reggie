@@ -1049,6 +1049,18 @@ def InitMidwayPoint(sprite): # 188
     sprite.image = ImageCache['MidwayFlag']
     return (0,-37,33,54)
 
+def InitUrchin(sprite): # 193
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['Urchin']
+    return (-12,-14,39,38)
+
+def InitMegaUrchin(sprite): # 194
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['MegaUrchin']
+    return (-40,-46,113,108)
+
 def InitIcicle(sprite): # 201
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -2153,6 +2165,8 @@ Initialisers = {
     180: InitCheepChomp,
     182: InitDoor,
     188: InitMidwayPoint,
+    193: InitUrchin,
+    194: InitMegaUrchin,
     198: InitGiantgoomba,
     199: InitMegagoomba,
     200: InitMicrogoomba,
@@ -3394,6 +3408,8 @@ def LoadBasicSuite():
     ImageCache['Goomba'] = QtGui.QPixmap('reggiedata/sprites/goomba.png')
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
     ImageCache['CheepChomp'] = QtGui.QPixmap('reggiedata/sprites/cheep_chomp.png')
+    ImageCache['Urchin'] = QtGui.QPixmap('reggiedata/sprites/urchin.png')
+    ImageCache['MegaUrchin'] = QtGui.QPixmap('reggiedata/sprites/mega_urchin.png')
     ImageCache['Puffer'] = QtGui.QPixmap('reggiedata/sprites/porcu_puffer.png')
     ImageCache['Microgoomba'] = QtGui.QPixmap('reggiedata/sprites/microgoomba.png')
     ImageCache['Giantgoomba'] = QtGui.QPixmap('reggiedata/sprites/giantgoomba.png')
