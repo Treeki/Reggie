@@ -166,6 +166,12 @@ def InitParagoomba(sprite): # 21
     sprite.image = ImageCache['Paragoomba']
     return (1,-10,24,26)
 
+def InitMicrogoomba(sprite): # 200
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['Microgoomba']
+    return (4,8,9,9)
+
 def InitHorzMovingPlatform(sprite): # 23
     if 'WoodenPlatformL' not in ImageCache:
         LoadPlatformImages()
@@ -2121,6 +2127,7 @@ Initialisers = {
     178: InitScalePlatform,
     182: InitDoor,
     188: InitMidwayPoint,
+    200: InitMicrogoomba,
     201: InitIcicle,
     202: InitMGCannon,
     203: InitMGChest,
@@ -3358,6 +3365,7 @@ def LoadBasicSuite():
     ImageCache['RedCoinRing'] = QtGui.QPixmap('reggiedata/sprites/redcoinring.png')
     ImageCache['Goomba'] = QtGui.QPixmap('reggiedata/sprites/goomba.png')
     ImageCache['Paragoomba'] = QtGui.QPixmap('reggiedata/sprites/paragoomba.png')
+    ImageCache['Microgoomba'] = QtGui.QPixmap('reggiedata/sprites/microgoomba.png')
     ImageCache['KoopaG'] = QtGui.QPixmap('reggiedata/sprites/koopa_green.png')
     ImageCache['KoopaR'] = QtGui.QPixmap('reggiedata/sprites/koopa_red.png')
     ImageCache['KoopaShellG'] = QtGui.QPixmap('reggiedata/sprites/koopa_green_shell.png')
