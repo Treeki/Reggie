@@ -1256,6 +1256,17 @@ def InitDoor(sprite): # 182, 259, 276, 277, 278, 452
     sprite.doorSize = type[1]
     return type[1]
 
+def InitPoltergeistItem(sprite): #262
+    global ImageCache
+    if 'PoltergeistItem' not in ImageCache:
+        LoadPolterItems()
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizePoltergeistItem
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (-6,-4,30,27)
+
 def InitWaterPiranha(sprite): # 263
     global ImageCache
     if 'WaterPiranha' not in ImageCache:
@@ -2234,6 +2245,7 @@ Initialisers = {
     255: InitBlock,
     256: InitBlock,
     259: InitDoor,
+    262: InitPoltergeistItem,
     263: InitWaterPiranha,
     264: InitWalkingPiranha,
     265: InitFallingIcicle,
@@ -2986,7 +2998,17 @@ def SizeDoor(sprite): # 182, 259, 276, 277, 278, 452
         sprite.yoffset = doorSize[1] + (doorSize[3] - (doorSize[2] / 2))
         sprite.xsize = doorSize[3]
         sprite.ysize = doorSize[2]
+
+def SizePoltergeistItem(sprite): # 262
+    style = ord(sprite.spritedata[5]) & 15
     
+    if style == 0:
+        sprite.image = ImageCache['PolterQBlock']
+    else:
+        sprite.xsize = 28
+        sprite.ysize = 40
+        sprite.yoffset = -23
+        sprite.image = ImageCache['PolterStand']
 
 def SizeFallingIcicle(sprite): # 265
     size = ord(sprite.spritedata[5]) & 1
@@ -3646,6 +3668,11 @@ def LoadCrabs():
     ImageCache['Huckit'] = QtGui.QPixmap('reggiedata/sprites/huckit_crab.png')
     originalImg = QtGui.QImage('reggiedata/sprites/huckit_crab.png')
     ImageCache['HuckitFlipped'] = QtGui.QPixmap.fromImage(originalImg.mirrored(True, False))
+
+def LoadPolterItems():
+    global ImageCache
+    ImageCache['PolterStand'] = QtGui.QPixmap('reggiedata/sprites/polter_stand.png')
+    ImageCache['PolterQBlock'] = QtGui.QPixmap('reggiedata/sprites/polter_qblock.png')
 
 def LoadIceStuff():
     global ImageCache
