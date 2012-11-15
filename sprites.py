@@ -1057,6 +1057,12 @@ def InitCheepChomp(sprite): # 180
     sprite.image = ImageCache['CheepChomp']
     return (-24,-30,76,66)
 
+def InitPlayerBlock(sprite): # 187
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['PlayerBlock']
+    return (0,0,16,16)
+
 def InitMidwayPoint(sprite): # 188
     if 'MidwayFlag' not in ImageCache:
         LoadFlagpole()
@@ -1612,6 +1618,12 @@ def InitRopeLadder(sprite): # 330
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
     return (-3,-2,22,16)
+
+def InitPlayerBlockPlatform(sprite): #333
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['PlayerBlockPlatform']
+    return (0,0,64,16)
 
 def InitCheepGiant(sprite): # 334
     global ImageCache
@@ -2264,6 +2276,7 @@ Initialisers = {
     178: InitScalePlatform,
     180: InitCheepChomp,
     182: InitDoor,
+    187: InitPlayerBlock,
     188: InitMidwayPoint,
     193: InitUrchin,
     194: InitMegaUrchin,
@@ -2327,6 +2340,7 @@ Initialisers = {
     321: InitArrowBlock,
     325: InitGhostHouseStand,
     330: InitRopeLadder,
+    333: InitPlayerBlockPlatform,
     334: InitCheepGiant,
     339: InitPipe,
     341: InitBigShell,
@@ -3629,6 +3643,8 @@ def LoadBasicSuite():
     ImageCache['Wiggler'] = QtGui.QPixmap('reggiedata/sprites/wiggler.png')
     ImageCache['SuperGuide'] = QtGui.QPixmap('reggiedata/sprites/superguide_block.png')
     ImageCache['RouletteBlock'] = QtGui.QPixmap('reggiedata/sprites/roulette.png')
+    ImageCache['PlayerBlock'] = QtGui.QPixmap('reggiedata/sprites/player_block.png')
+    ImageCache['PlayerBlockPlatform'] = QtGui.QPixmap('reggiedata/sprites/player_block_platform.png')
     ImageCache['StarCoin'] = QtGui.QPixmap('reggiedata/sprites/starcoin.png')
     ImageCache['PipePlantUp'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_up.png')
     ImageCache['PipePlantDown'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_down.png')
