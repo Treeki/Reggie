@@ -1030,6 +1030,18 @@ def InitGiantFloatingLog(sprite): # 173
     sprite.image = ImageCache['GiantFloatingLog']
     return (-152,-32,304,64)
 
+def InitFlyingQBlock(sprite): # 175
+    global ImageCache
+    if 'FlyingQBlockY' not in ImageCache:
+        LoadFlyingBlocks()
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeFlyingQBlock
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    
+    return (-12,-16,46,36)
+
 def InitRouletteBlock(sprite): # 176
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
@@ -2278,6 +2290,7 @@ Initialisers = {
     158: InitFireSnake,
     172: InitScrewMushroom,
     173: InitGiantFloatingLog,
+    175: InitFlyingQBlock,
     176: InitRouletteBlock,
     178: InitScalePlatform,
     180: InitCheepChomp,
@@ -2849,6 +2862,18 @@ def SizeScrewMushroom(sprite): # 172, 382
     if sprite.type == 172: # with bolt
         sprite.ysize += 16
         sprite.yoffset -= 16
+
+def SizeFlyingQBlock(sprite): #175
+    color = ord(sprite.spritedata[4]) >> 4
+    if color == 0:
+        color = 'yellow'
+    elif color == 1:
+        color = 'blue'
+    elif color == 2:
+        color = 'gray'
+    elif color == 3:
+        color = 'red'
+    sprite.image = ImageCache['FlyingQBlock%s' % color]
 
 def SizeScalePlatform(sprite): # 178
     info1 = ord(sprite.spritedata[4])
@@ -3811,6 +3836,11 @@ def LoadPolterItems():
     global ImageCache
     ImageCache['PolterStand'] = QtGui.QPixmap('reggiedata/sprites/polter_stand.png')
     ImageCache['PolterQBlock'] = QtGui.QPixmap('reggiedata/sprites/polter_qblock.png')
+
+def LoadFlyingBlocks():
+    global ImageCache
+    for color in ['yellow', 'blue', 'gray', 'red']:
+        ImageCache['FlyingQBlock%s' % color] = QtGui.QPixmap('reggiedata/sprites/flying_qblock_%s.png' % color)
 
 def LoadIceStuff():
     global ImageCache
