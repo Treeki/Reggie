@@ -165,7 +165,7 @@ def InitParagoomba(sprite): # 21
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['Paragoomba']
     return (1,-10,24,26)
-
+	
 def InitMicrogoomba(sprite): # 200
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
@@ -177,7 +177,7 @@ def InitGiantgoomba(sprite): # 198
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['Giantgoomba']
     return (-6,-19,32,36)
-
+	
 def InitMegagoomba(sprite): # 199
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
@@ -994,6 +994,17 @@ def InitRedCoinRing(sprite): # 156
     sprite.image = ImageCache['RedCoinRing']
     return (-18,-15,51,63)
 
+def InitFireSnake(sprite): # 158
+    global ImageCache
+    if 'FireSnake' not in ImageCache:
+        LoadFireSnake()
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeFireSnake
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (0,0,16,16)
+
 def InitScrewMushroom(sprite): # 172, 382
     global ImageCache
     if 'Bolt' not in ImageCache:
@@ -1018,6 +1029,12 @@ def InitGiantFloatingLog(sprite): # 173
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['GiantFloatingLog']
     return (-152,-32,304,64)
+
+def InitRouletteBlock(sprite): # 176
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['RouletteBlock']
+    return (-6,-6,29,29)
 
 def InitScalePlatform(sprite): # 178
     global ImageCache
@@ -1087,7 +1104,7 @@ def InitClam(sprite): # 197
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
     return (-28,-50,74,70)
-
+	
 def InitIcicle(sprite): # 201
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -1344,7 +1361,7 @@ def InitLittleMouser(sprite): # 271
     global ImageCache
     if 'LittleMouser0' not in ImageCache:
         LoadMice()
-    	
+		
     sprite.dynamicSize = True
     sprite.dynSizer = SizeLittleMouser
     sprite.customPaint = True
@@ -1362,7 +1379,7 @@ def InitIceBro(sprite): # 272
     sprite.image = ImageCache['IceBro']
     return (-5,-23,26,39)
 
-def InitCastleGear(sprite):
+def InitCastleGear(sprite): #274
     global ImageCache
     if 'CastleGearL' not in ImageCache or 'CastleGearS' not in ImageCache:
         LoadCastleGears()
@@ -2240,8 +2257,10 @@ Initialisers = {
     151: InitPuffer,
     155: InitStarCoin,
     156: InitRedCoinRing,
+    158: InitFireSnake,
     172: InitScrewMushroom,
     173: InitGiantFloatingLog,
+    176: InitRouletteBlock,
     178: InitScalePlatform,
     180: InitCheepChomp,
     182: InitDoor,
@@ -2786,6 +2805,17 @@ def SizeArrow(sprite): # 143
     offset = ArrowOffsets[direction]
     sprite.xoffset, sprite.yoffset = offset
 
+def SizeFireSnake(sprite): # 158
+    move = ord(sprite.spritedata[5]) & 15
+    
+    if move == 1:
+        sprite.image = ImageCache['FireSnakeWait']
+    else:
+        sprite.xsize = 20
+        sprite.ysize = 32
+        sprite.yoffset = -16
+        sprite.image = ImageCache['FireSnake']
+
 def SizeScrewMushroom(sprite): # 172, 382
     # I wish I knew what this does
     SomeOffset = ord(sprite.spritedata[3])
@@ -3043,7 +3073,7 @@ def SizePoltergeistItem(sprite): # 262
         sprite.ysize = 40
         sprite.yoffset = -23
         sprite.image = ImageCache['PolterStand']
-
+    
 def SizeFallingIcicle(sprite): # 265
     size = ord(sprite.spritedata[5]) & 1
     
@@ -3090,7 +3120,7 @@ def SizeLittleMouser(sprite): # 271
         elif four:
             sprite.xsize = 128
 
-def SizeCastleGear(sprite):
+def SizeCastleGear(sprite): #274
     isBig = (ord(sprite.spritedata[4]) & 0xF) == 1
     sprite.image = ImageCache['CastleGearL'] if isBig else ImageCache['CastleGearS']
     sprite.xoffset = -(((sprite.image.width()/2.0)-12)*(2.0/3.0))
@@ -3598,6 +3628,7 @@ def LoadBasicSuite():
     ImageCache['SpinyU'] = QtGui.QPixmap('reggiedata/sprites/spiny_u.png')
     ImageCache['Wiggler'] = QtGui.QPixmap('reggiedata/sprites/wiggler.png')
     ImageCache['SuperGuide'] = QtGui.QPixmap('reggiedata/sprites/superguide_block.png')
+    ImageCache['RouletteBlock'] = QtGui.QPixmap('reggiedata/sprites/roulette.png')
     ImageCache['StarCoin'] = QtGui.QPixmap('reggiedata/sprites/starcoin.png')
     ImageCache['PipePlantUp'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_up.png')
     ImageCache['PipePlantDown'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_down.png')
@@ -3746,6 +3777,11 @@ def LoadCrabs():
     ImageCache['Huckit'] = QtGui.QPixmap('reggiedata/sprites/huckit_crab.png')
     originalImg = QtGui.QImage('reggiedata/sprites/huckit_crab.png')
     ImageCache['HuckitFlipped'] = QtGui.QPixmap.fromImage(originalImg.mirrored(True, False))
+
+def LoadFireSnake():
+    global ImageCache
+    ImageCache['FireSnakeWait'] = QtGui.QPixmap('reggiedata/sprites/fire_snake_0.png')
+    ImageCache['FireSnake'] = QtGui.QPixmap('reggiedata/sprites/fire_snake_1.png')
 
 def LoadPolterItems():
     global ImageCache
