@@ -1906,6 +1906,12 @@ def InitGabon(sprite): # 414
     sprite.customPainter = PaintGenericObject
     return (0,0,16,16)
 
+def InitInvisibleOneUp(sprite): #416
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['InvisibleOneUp']
+    return (3,5,12,11)
+
 def InitSpinjumpCoin(sprite): # 417
     global ImageCache
     if 'SpinjumpCoin' not in ImageCache:
@@ -2380,6 +2386,7 @@ Initialisers = {
     403: InitBlock,
     413: InitWendyRing,
     414: InitGabon,
+    416: InitInvisibleOneUp,
     417: InitSpinjumpCoin,
     422: InitBlock,
     423: InitBlock,
@@ -3646,6 +3653,7 @@ def LoadBasicSuite():
     ImageCache['PlayerBlock'] = QtGui.QPixmap('reggiedata/sprites/player_block.png')
     ImageCache['PlayerBlockPlatform'] = QtGui.QPixmap('reggiedata/sprites/player_block_platform.png')
     ImageCache['StarCoin'] = QtGui.QPixmap('reggiedata/sprites/starcoin.png')
+    ImageCache['InvisibleOneUp'] = QtGui.QPixmap('reggiedata/sprites/invisible_1up.png')
     ImageCache['PipePlantUp'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_up.png')
     ImageCache['PipePlantDown'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_down.png')
     ImageCache['PipePlantLeft'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_left.png')
