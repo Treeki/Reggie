@@ -1184,6 +1184,17 @@ def InitJumboRay(sprite): # 224
     sprite.customPainter = PaintGenericObject
     return (0,0,171,79)
 
+def InitPipeCannon(sprite): #227
+    global ImageCache
+    if 'PipeCannon' not in ImageCache:
+        LoadPipeCannon()
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizePipeCannon
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (0,0,55,64)
+
 def InitExtendShroom(sprite): # 228
     global ImageCache
     if 'ExtendShroomL' not in ImageCache:
@@ -2315,6 +2326,7 @@ Initialisers = {
     221: InitBlock,
     223: InitSpringBlock,
     224: InitJumboRay,
+    227: InitPipeCannon,
     228: InitExtendShroom,
     230: InitBramball,
     231: InitWiggleShroom,
@@ -3012,6 +3024,62 @@ def SizeJumboRay(sprite): # 224
         sprite.xsize = 171
         sprite.ysize = 79
         sprite.image = ImageCache['JumboRayR']
+
+def SizePipeCannon(sprite): # 227
+    fireDirection = ord(sprite.spritedata[5]) & 15    
+
+    if fireDirection == 1 or fireDirection == 3 or fireDirection == 6:
+        imgDirection = 'Flipped'
+    else:
+        imgDirection = ''
+    
+    if fireDirection == 0 or fireDirection == 1:
+        imgNumber = 0
+    elif fireDirection == 2 or fireDirection == 3:
+        imgNumber = 1
+    elif fireDirection == 4:
+        imgNumber = 2
+    elif fireDirection == 5 or fireDirection == 6:
+        imgNumber = 3
+
+    if fireDirection == 0:
+        sprite.xoffset = 0
+        sprite.yoffset = 0
+        sprite.xsize = 55
+        sprite.ysize = 64
+    elif fireDirection == 1:
+        sprite.xoffset = -22
+        sprite.yoffset = 0
+        sprite.xsize = 55
+        sprite.ysize = 64
+    elif fireDirection == 2:
+        sprite.xoffset = 0
+        sprite.yoffset = 0
+        sprite.xsize = 40
+        sprite.ysize = 64
+    elif fireDirection == 3:
+        sprite.xoffset = -11
+        sprite.yoffset = 0
+        sprite.xsize = 40
+        sprite.ysize = 64
+    elif fireDirection == 4:
+        sprite.xoffset = -4
+        sprite.yoffset = -16
+        sprite.xsize = 40
+        sprite.ysize = 80
+    elif fireDirection == 5:
+        sprite.xoffset = 0
+        sprite.yoffset = 0
+        sprite.xsize = 59
+        sprite.ysize = 64
+    elif fireDirection == 6:
+        sprite.xoffset = -28
+        sprite.yoffset = 0
+        sprite.xsize = 59
+        sprite.ysize = 64
+
+    sprite.image = ImageCache['PipeCannon%s%d' % (imgDirection, imgNumber)]
+
 
 def SizeExtendShroom(sprite): # 228
     props = ord(sprite.spritedata[5])
@@ -3841,6 +3909,12 @@ def LoadFlyingBlocks():
     global ImageCache
     for color in ['yellow', 'blue', 'gray', 'red']:
         ImageCache['FlyingQBlock%s' % color] = QtGui.QPixmap('reggiedata/sprites/flying_qblock_%s.png' % color)
+
+def LoadPipeCannon():
+    for i in xrange(8):
+        ImageCache['PipeCannon%d' % i] = QtGui.QPixmap('reggiedata/sprites/pipe_cannon_%d.png' % i)
+        originalImg = QtGui.QImage('reggiedata/sprites/pipe_cannon_%d.png' % i)
+        ImageCache['PipeCannonFlipped%d' % i] = QtGui.QPixmap.fromImage(originalImg.mirrored(True, False))
 
 def LoadIceStuff():
     global ImageCache
