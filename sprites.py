@@ -176,13 +176,13 @@ def InitGiantgoomba(sprite): # 198
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['Giantgoomba']
-    return (-8,-14,26,30)
+    return (-6,-19,32,36)
 
 def InitMegagoomba(sprite): # 199
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['Megagoomba']
-    return (-16,-32,40,48)
+    return (-11,-37,43,54)
 
 def InitHorzMovingPlatform(sprite): # 23
     if 'WoodenPlatformL' not in ImageCache:
