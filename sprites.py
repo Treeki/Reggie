@@ -1607,6 +1607,15 @@ def InitBoltBox(sprite): # 316
     sprite.customPainter = PaintBoltBox
     return (0,0,16,16)
 
+def InitBoxGenerator(sprite): #318
+    if 'BoxGenerator' not in ImageCache:
+        ImageCache['BoxGenerator'] = QtGui.QPixmap('reggiedata/sprites/box_generator.png')
+
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['BoxGenerator']
+    return (0,-64,64,64)
+
 def InitArrowBlock(sprite): # 321
     global ImageCache
     if 'ArrowBlock0' not in ImageCache:
@@ -2368,6 +2377,7 @@ Initialisers = {
     311: InitMegaIcicle,
     315: InitBolt,
     316: InitBoltBox,
+    318: InitBoxGenerator,
     321: InitArrowBlock,
     325: InitGhostHouseStand,
     330: InitRopeLadder,
@@ -3745,6 +3755,7 @@ def LoadBasicSuite():
     ImageCache['RouletteBlock'] = QtGui.QPixmap('reggiedata/sprites/roulette.png')
     ImageCache['PlayerBlock'] = QtGui.QPixmap('reggiedata/sprites/player_block.png')
     ImageCache['PlayerBlockPlatform'] = QtGui.QPixmap('reggiedata/sprites/player_block_platform.png')
+    ImageCache['BoxGenerator'] = QtGui.QPixmap('reggiedata/sprites/box_generator.png')
     ImageCache['StarCoin'] = QtGui.QPixmap('reggiedata/sprites/starcoin.png')
     ImageCache['InvisibleOneUp'] = QtGui.QPixmap('reggiedata/sprites/invisible_1up.png')
     ImageCache['PipePlantUp'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_up.png')
