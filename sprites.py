@@ -1069,6 +1069,12 @@ def InitCheepChomp(sprite): # 180
     sprite.image = ImageCache['CheepChomp']
     return (-24,-30,76,66)
 
+def InitToadBalloon(sprite): #185
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['ToadBalloon']
+    return (-4,-4,24,24)
+
 def InitPlayerBlock(sprite): # 187
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
@@ -2326,6 +2332,7 @@ Initialisers = {
     178: InitScalePlatform,
     180: InitCheepChomp,
     182: InitDoor,
+    185: InitToadBalloon,
     187: InitPlayerBlock,
     188: InitMidwayPoint,
     193: InitUrchin,
@@ -3791,6 +3798,7 @@ def LoadBasicSuite():
     ImageCache['BoxGenerator'] = QtGui.QPixmap('reggiedata/sprites/box_generator.png')
     ImageCache['StarCoin'] = QtGui.QPixmap('reggiedata/sprites/starcoin.png')
     ImageCache['InvisibleOneUp'] = QtGui.QPixmap('reggiedata/sprites/invisible_1up.png')
+    ImageCache['ToadBalloon'] = QtGui.QPixmap('reggiedata/sprites/toad_balloon.png')
     ImageCache['PipePlantUp'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_up.png')
     ImageCache['PipePlantDown'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_down.png')
     ImageCache['PipePlantLeft'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_left.png')
