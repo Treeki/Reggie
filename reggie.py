@@ -4,6 +4,7 @@
 # Reggie! - New Super Mario Bros. Wii Level Editor
 # Copyright (C) 2009-2010 Treeki, Tempus
 
+
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -1213,6 +1214,7 @@ PathsNonFrozen = True
 PaintingEntrance = None
 PaintingEntranceListIndex = None
 NumberFont = None
+NumberFontBold = None
 GridEnabled = False
 RestoredFromAutoSave = False
 AutoSavePath = ''
@@ -1237,6 +1239,21 @@ def LoadNumberFont():
         NumberFont = QtGui.QFont('Lucida Grande', 9)
     else:
         NumberFont = QtGui.QFont('Sans', 8)
+
+def LoadNumberFontBold():
+    """Creates a valid font we can use to display the item numbers"""
+    global NumberFontBold
+    if NumberFontBold != None: return
+
+    # this is a really crappy method, but I can't think of any other way
+    # normal Qt defines Q_WS_WIN and Q_WS_MAC but we don't have that here
+    s = QtCore.QSysInfo()
+    if hasattr(s, 'WindowsVersion'):
+        NumberFontBold = QtGui.QFont('Tahoma', 7, QtGui.QFont.Bold)
+    elif hasattr(s, 'MacintoshVersion'):
+        NumberFontBold = QtGui.QFont('Lucida Grande', 9)
+    else:
+        NumberFontBold = QtGui.QFont('Sans', 8, QtGui.QFont.Bold)
 
 def SetDirty(noautosave=False):
     global Dirty, DirtyOverride, AutoSaveDirty
@@ -2188,7 +2205,7 @@ class ZoneItem(LevelEditorItem):
         """Creates a zone with specific data"""
         LevelEditorItem.__init__(self)
 
-        self.font = NumberFont
+        self.font = NumberFontBold
         self.id = id
         self.TitlePos = QtCore.QPointF(10,18)
         self.UpdateTitle()
@@ -2438,7 +2455,7 @@ class SpriteLocationItem(LevelEditorItem):
         """Creates a location with specific data"""
         LevelEditorItem.__init__(self)
 
-        self.font = NumberFont
+        self.font = NumberFontBold
         self.TitlePos = QtCore.QPointF(4,12)
         self.objx = x
         self.objy = y
@@ -3889,7 +3906,7 @@ class SpriteEditorWidget(QtGui.QWidget):
 
             self.DataUpdate.emit(data)
         else:
-            self.raweditor.setStyleSheet('QLineEdit { background-color: #ffd2d2; }')
+            self.raweditor.setStyleSheet('QLineEdit { background-color: #8d0000; color: #ffffff; font: bold}') #reddish background, bold white text
 
 
 class EntranceEditorWidget(QtGui.QWidget):
@@ -5196,7 +5213,7 @@ class ObjectShiftDialog(QtGui.QDialog):
         buttonBox.rejected.connect(self.reject)
 
         moveLayout = QtGui.QFormLayout()
-        offsetlabel = QtGui.QLabel('Enter an offset in pixels - each block is 16 pixels wide/high. Note that normal objects can only be placed on 16x16 boundaries, so if the offset you enter isn\'t a multiple of 16, they won\'t be moved correctly.')
+        offsetlabel = QtGui.QLabel('Enter an offset in pixels - each block is 16 pixels wide/high. Note that normal objects can only be placed on 16x16 boundaries, so if the offset you enter isn\'t a multiple of 16, they won\'t be moved correctly. Positive values move right/down, negative values move left/up.')
         offsetlabel.setWordWrap(True)
         moveLayout.addWidget(offsetlabel)
         moveLayout.addRow('X:', self.XOffset)
@@ -5416,7 +5433,7 @@ class LoadingTab(QtGui.QWidget):
 
         self.timer = QtGui.QSpinBox()
         self.timer.setRange(0, 999)
-        self.timer.setToolTip("Sets the countdown timer on load from the world map. It's possible to set different times for the midpoint area.")
+        self.timer.setToolTip("Sets the countdown timer on load from the world map.")
         timerLabel = QtGui.QLabel("Timer:")
         self.timer.setValue(Level.timeLimit + 200)
 
@@ -5453,6 +5470,7 @@ class LoadingTab(QtGui.QWidget):
         eventLayout.addWidget(self.eventChooser)
 
         eventBox = QtGui.QGroupBox('Default Events')
+        eventBox.setToolTip("Check the following Event IDs to make them start already activated.")
         eventBox.setLayout(eventLayout)
 
         Layout = QtGui.QVBoxLayout()
@@ -6400,8 +6418,10 @@ class ReggieWindow(QtGui.QMainWindow):
 
         # Reggie Version number goes below here. 64 char max (32 if non-ascii).
         self.ReggieInfo = ReggieID
+        app.setStyleSheet('QToolTip {border: 2px solid black}')
 
-        self.ZoomLevels = [12.5, 25.0, 50.0, 75.0, 100.0, 150.0, 200.0]
+        self.ZoomLevels = [10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0, 85.0, 90.0, 95.0, 100.0, 125.0, 150.0, 175.0, 200.0, 250.0, 300.0]
+
 
         self.AutosaveTimer = QtCore.QTimer()
         self.AutosaveTimer.timeout.connect(self.Autosave)
@@ -6418,7 +6438,7 @@ class ReggieWindow(QtGui.QMainWindow):
         self.setWindowTitle('Reggie! Level Editor')
         self.setWindowIcon(QtGui.QIcon('reggiedata/icon.png'))
         self.setIconSize(QtCore.QSize(16, 16))
-
+        
         # create the actions
         self.SetupActionsAndMenus()
 
@@ -6473,8 +6493,7 @@ class ReggieWindow(QtGui.QMainWindow):
             self.LoadLevel('01-01', False, 1)
 
         QtCore.QTimer.singleShot(100, self.levelOverview.update)
-
-
+        
     def SetupActionsAndMenus(self):
         """Sets up Reggie's actions, menus and toolbars"""
         self.actions = {}
@@ -6504,9 +6523,11 @@ class ReggieWindow(QtGui.QMainWindow):
         self.CreateAction('freezepaths', self.HandlePathsFreeze, None, 'Freeze Paths', 'Make Paths non-selectable', QtGui.QKeySequence('Ctrl+Shift+5'), True)
         self.actions['freezepaths'].setChecked(not PathsNonFrozen)
 
+        self.CreateAction('zoommax', self.HandleZoomMax, GetIcon('zoommax'), 'Maximum Zoom', 'Zoom in all the way', QtGui.QKeySequence('Ctrl+PgDown'), False)
         self.CreateAction('zoomin', self.HandleZoomIn, GetIcon('zoomin'), 'Zoom In', 'Zoom into the main level view', QtGui.QKeySequence.ZoomIn, False)
         self.CreateAction('zoomactual', self.HandleZoomActual, GetIcon('zoomactual'), 'Zoom 100%', 'Show the level at the default zoom', QtGui.QKeySequence('Ctrl+0'), False)
         self.CreateAction('zoomout', self.HandleZoomOut, GetIcon('zoomout'), 'Zoom Out', 'Zoom out of the main level view', QtGui.QKeySequence.ZoomOut, False)
+        self.CreateAction('zoommin', self.HandleZoomMin, GetIcon('zoommin'), 'Minimum Zoom', 'Zoom out all the way', QtGui.QKeySequence('Ctrl+PgUp'), False)
 
         self.CreateAction('areaoptions', self.HandleAreaOptions, GetIcon('area'), 'Area Settings...', 'Controls tileset swapping, stage timer, entrance on load, and stage wrap', QtGui.QKeySequence('Ctrl+Alt+A'))
         self.CreateAction('zones', self.HandleZones, GetIcon('zones'), 'Zones...', 'Zone creation, deletion, and preference editing', QtGui.QKeySequence('Ctrl+Alt+Z'))
@@ -6583,10 +6604,11 @@ class ReggieWindow(QtGui.QMainWindow):
         vmenu.addSeparator()
         vmenu.addAction(self.actions['grid'])
         vmenu.addSeparator()
+        vmenu.addAction(self.actions['zoommax'])
         vmenu.addAction(self.actions['zoomin'])
         vmenu.addAction(self.actions['zoomactual'])
         vmenu.addAction(self.actions['zoomout'])
-        vmenu.addSeparator()
+        vmenu.addAction(self.actions['zoommin'])
         # self.levelOverviewDock.toggleViewAction() is added here later
         # so we assign it to self.vmenu
         self.vmenu = vmenu
@@ -6621,9 +6643,11 @@ class ReggieWindow(QtGui.QMainWindow):
         self.toolbar.addAction(self.actions['copy'])
         self.toolbar.addAction(self.actions['paste'])
         self.toolbar.addSeparator()
+        self.toolbar.addAction(self.actions['zoommax'])
         self.toolbar.addAction(self.actions['zoomin'])
         self.toolbar.addAction(self.actions['zoomactual'])
         self.toolbar.addAction(self.actions['zoomout'])
+        self.toolbar.addAction(self.actions['zoommin'])
         self.toolbar.addSeparator()
         self.toolbar.addAction(self.actions['grid'])
         self.toolbar.addSeparator()
@@ -6641,6 +6665,7 @@ class ReggieWindow(QtGui.QMainWindow):
         self.toolbar.addWidget(self.areaComboBox)
 
 
+
     def SetupDocksAndPanels(self):
         """Sets up the dock widgets and panels"""
         # level overview
@@ -6653,6 +6678,7 @@ class ReggieWindow(QtGui.QMainWindow):
         self.levelOverview.moveIt.connect(self.HandleOverviewClick)
         self.levelOverviewDock = dock
         dock.setWidget(self.levelOverview)
+
 
         self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
         dock.setVisible(True)
@@ -6686,7 +6712,7 @@ class ReggieWindow(QtGui.QMainWindow):
         dock.setWidget(self.entranceEditor)
         self.entranceEditorDock = dock
 
-        # create the entrance editor panel
+        # create the path editor panel
         dock = QtGui.QDockWidget('Modify Selected Path Node Properties', self)
         dock.setVisible(False)
         dock.setFeatures(QtGui.QDockWidget.DockWidgetMovable | QtGui.QDockWidget.DockWidgetFloatable)
@@ -6695,6 +6721,7 @@ class ReggieWindow(QtGui.QMainWindow):
 
         self.pathEditor = PathNodeEditorWidget()
         dock.setWidget(self.pathEditor)
+
         self.pathEditorDock = dock
 
         self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
@@ -6777,7 +6804,7 @@ class ReggieWindow(QtGui.QMainWindow):
 
         # sprite choosing tabs
         self.sprPickerTab = QtGui.QWidget()
-        tabs.addTab(self.sprPickerTab, GetIcon('sprites'), '')
+        tabs.addTab(self.sprPickerTab, GetIcon('sprites'), 'Sprites')
 
         spl = QtGui.QVBoxLayout(self.sprPickerTab)
         self.sprPickerLayout = spl
@@ -6841,7 +6868,7 @@ class ReggieWindow(QtGui.QMainWindow):
 
         # entrance tab
         self.entEditorTab = QtGui.QWidget()
-        tabs.addTab(self.entEditorTab, GetIcon('entrances'), '')
+        tabs.addTab(self.entEditorTab, GetIcon('entrances'), 'Entrances')
 
         eel = QtGui.QVBoxLayout(self.entEditorTab)
         self.entEditorLayout = eel
@@ -6856,7 +6883,7 @@ class ReggieWindow(QtGui.QMainWindow):
 
         # paths tab
         self.pathEditorTab = QtGui.QWidget()
-        tabs.addTab(self.pathEditorTab, GetIcon('paths'), '')
+        tabs.addTab(self.pathEditorTab, GetIcon('paths'), 'Paths')
 
         pathel = QtGui.QVBoxLayout(self.pathEditorTab)
         self.pathEditorLayout = pathel
@@ -7788,6 +7815,16 @@ class ReggieWindow(QtGui.QMainWindow):
         """Handle zooming to the actual size"""
         self.ZoomTo(100.0)
 
+    @QtCore.pyqtSlot()
+    def HandleZoomMin(self):
+        """Handle zooming to the minimum size"""
+        self.ZoomTo(10.0)
+
+    @QtCore.pyqtSlot()
+    def HandleZoomMax(self):
+        """Handle zooming to the maximum size"""
+        self.ZoomTo(300.0)
+
 
     def ZoomTo(self, z):
         """Zoom to a specific level"""
@@ -7800,6 +7837,8 @@ class ReggieWindow(QtGui.QMainWindow):
         zi = self.ZoomLevels.index(z)
         self.actions['zoomin'].setEnabled(zi < len(self.ZoomLevels) - 1)
         self.actions['zoomactual'].setEnabled(z != 100.0)
+        self.actions['zoommin'].setEnabled(z != 10.0)
+        self.actions['zoommax'].setEnabled(z != 300.0)
         self.actions['zoomout'].setEnabled(zi > 0)
 
         self.scene.update()
@@ -8944,6 +8983,7 @@ def main():
     LoadSpriteData()
     LoadEntranceNames()
     LoadNumberFont()
+    LoadNumberFontBold()
     LoadOverrides()
     sprites.Setup()
 
