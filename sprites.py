@@ -1158,6 +1158,17 @@ def InitMGChest(sprite): # 203
     sprite.image = ImageCache['MGChest']
     return (-12,-11,40,27)
 
+def InitGiantBubble(sprite): #205
+    global ImageCache
+    if 'GiantBubble0' not in ImageCache:
+        LoadGiantBubble()
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeGiantBubble
+    sprite.customPaint = True
+    sprite.customPainter = PaintGiantBubble
+    return (-61,-68,122,137)
+
 RollingHillSizes = [2*16, 18*16, 32*16, 50*16, 64*16, 10*16, 14*16, 20*16, 0, 0, 0, 0, 0, 0, 0, 0]
 def InitRollingHill(sprite): # 212
     size = (ord(sprite.spritedata[3]) >> 4) & 0xF
@@ -1561,6 +1572,17 @@ def InitMontyMole(sprite): # 303
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
     return (-6,-4,28,25)
+
+def InitRotSpotlight(sprite): # 306
+    global ImageCache
+    if 'RotSpotlight0' not in ImageCache:
+        LoadRotSpotlight()
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeRotSpotlight
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (-24,-64,62,104)
 
 def InitArrowSign(sprite): # 310
     global ImageCache
@@ -2346,6 +2368,7 @@ Initialisers = {
     201: InitIcicle,
     202: InitMGCannon,
     203: InitMGChest,
+    205: InitGiantBubble,
     207: InitBlock,
     208: InitBlock,
     209: InitBlock,
@@ -2390,6 +2413,7 @@ Initialisers = {
     300: InitRotCannon,
     301: InitRotCannonPipe,
     303: InitMontyMole,
+    306: InitRotSpotlight,
     308: InitHammerBro,
     310: InitArrowSign,
     311: InitMegaIcicle,
@@ -2967,6 +2991,25 @@ def SizeIcicle(sprite): # 201
         sprite.image = ImageCache['IcicleLargeS']
         sprite.ysize = 32
 
+def SizeGiantBubble(sprite): #205
+    sprite.shape = ord(sprite.spritedata[4]) >> 4
+    sprite.direction = ord(sprite.spritedata[5]) & 15
+    arrow = None
+
+    if sprite.shape == 0:
+        sprite.xsize = 122
+        sprite.ysize = 137
+    elif sprite.shape == 1:
+        sprite.xsize = 76
+        sprite.ysize = 170
+    elif sprite.shape == 2:
+        sprite.xsize = 160
+        sprite.ysize = 81
+
+    sprite.xoffset = sprite.xsize / 2 * -1 + 8
+    sprite.yoffset = sprite.ysize / 2 * -1 + 8
+
+
 def SizeBlock(sprite): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     # Sprite types:
     # 207 = Question Block
@@ -3403,6 +3446,11 @@ def SizeMontyMole(sprite): # 303
         sprite.image = ImageCache['Mole']
     else:
         sprite.image = ImageCache['MoleCave']
+
+def SizeRotSpotlight(sprite): # 306
+    angle = ord(sprite.spritedata[3]) & 15
+    
+    sprite.image = ImageCache['RotSpotlight%d' % angle]
 
 def SizeArrowSign(sprite): # 310
     direction = ord(sprite.spritedata[5]) & 7
@@ -3935,6 +3983,11 @@ def LoadClams():
     for i in xrange(8):
         ImageCache['Clam%d' % i] = QtGui.QPixmap('reggiedata/sprites/clam_%d.png' % i)
 
+def LoadRotSpotlight():
+    global ImageCache
+    for i in xrange(16):
+        ImageCache['RotSpotlight%d' % i] = QtGui.QPixmap('reggiedata/sprites/rotational_spotlight_%d.png' % i)
+
 def LoadMice():
     for i in xrange(8):
         ImageCache['LittleMouser%d' % i] = QtGui.QPixmap('reggiedata/sprites/little_mouser_%d.png' % i)
@@ -3967,6 +4020,12 @@ def LoadPipeCannon():
         ImageCache['PipeCannon%d' % i] = QtGui.QPixmap('reggiedata/sprites/pipe_cannon_%d.png' % i)
         originalImg = QtGui.QImage('reggiedata/sprites/pipe_cannon_%d.png' % i)
         ImageCache['PipeCannonFlipped%d' % i] = QtGui.QPixmap.fromImage(originalImg.mirrored(True, False))
+
+def LoadGiantBubble():
+    for shape in xrange(4):
+        ImageCache['GiantBubble%d' % shape] = QtGui.QPixmap('reggiedata/sprites/giant_bubble_%d.png' % shape)
+    for arrow in ['ud', 'lr']:
+        ImageCache['MovingChainArrow%s' % arrow] = QtGui.QPixmap('reggiedata/sprites/arrow_%s.png' % arrow)
 
 def LoadMovingChainLink():
     for shape in xrange(4):
@@ -4160,6 +4219,22 @@ def PaintPokey(sprite, painter):
     painter.drawPixmap(0, 0, ImageCache['PokeyTop'])
     painter.drawTiledPixmap(0, 37, 36, sprite.ysize*1.5 - 61, ImageCache['PokeyMiddle'])
     painter.drawPixmap(0, sprite.ysize*1.5 - 24, ImageCache['PokeyBottom'])
+
+def PaintGiantBubble(sprite, painter):
+    if sprite.direction == 0:
+        arrow = 'ud'
+    else:
+        arrow = 'lr'
+    xsize = sprite.xsize
+    ysize = sprite.ysize
+
+    painter.drawPixmap(0, 0, ImageCache['GiantBubble%d' % sprite.shape])
+    if sprite.shape == 0:
+        painter.drawPixmap(xsize / 2 + 8, ysize / 2 + 12, ImageCache['MovingChainArrow%s' % arrow])
+    elif sprite.shape == 1:
+        painter.drawPixmap(xsize / 2 - 6, ysize / 2 + 18, ImageCache['MovingChainArrow%s' % arrow])
+    elif sprite.shape == 2:
+        painter.drawPixmap(xsize / 2 + 16, ysize / 2, ImageCache['MovingChainArrow%s' % arrow])
 
 def PaintMovingChainLink(sprite, painter):
     if sprite.direction == 0:
