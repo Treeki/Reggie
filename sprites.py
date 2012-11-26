@@ -2908,6 +2908,9 @@ def SizeFireSnake(sprite): # 158
     move = ord(sprite.spritedata[5]) & 15
     
     if move == 1:
+        sprite.xsize = 16
+        sprite.ysize = 16
+        sprite.yoffset = 0
         sprite.image = ImageCache['FireSnakeWait']
     else:
         sprite.xsize = 20
@@ -3089,10 +3092,12 @@ def SizeJumboRay(sprite): # 224
     flyleft = ord(sprite.spritedata[4]) & 15
     
     if flyleft == 1:
+        sprite.xoffset = 0
+        sprite.xsize = 171
+        sprite.ysize = 79
         sprite.image = ImageCache['JumboRayL']
     else:
         sprite.xoffset = -152
-        sprite.yoffset = 0
         sprite.xsize = 171
         sprite.ysize = 79
         sprite.image = ImageCache['JumboRayR']
@@ -3251,8 +3256,11 @@ def SizeDoor(sprite): # 182, 259, 276, 277, 278, 452
 
 def SizePoltergeistItem(sprite): # 262
     style = ord(sprite.spritedata[5]) & 15
-    
+    (-6,-4,30,27)
     if style == 0:
+        sprite.xsize = 30
+        sprite.ysize = 27
+        sprite.yoffset = -4
         sprite.image = ImageCache['PolterQBlock']
     else:
         sprite.xsize = 28
@@ -3298,12 +3306,16 @@ def SizeLittleMouser(sprite): # 271
             sprite.xsize = 128
     else:
         if one:
-            sprite.xsize = 30        
+            sprite.xoffset = -6
+            sprite.xsize = 30
         elif two:
+            sprite.xoffset = -6
             sprite.xsize = 61
         elif three:
+            sprite.xoffset = -6
             sprite.xsize = 95
         elif four:
+            sprite.xoffset = -6
             sprite.xsize = 128
 
 def SizeCastleGear(sprite): #274
