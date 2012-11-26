@@ -994,6 +994,12 @@ def InitRedCoinRing(sprite): # 156
     sprite.image = ImageCache['RedCoinRing']
     return (-18,-15,51,63)
 
+def InitBigBrickBlock(sprite): # 157
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['BigBrickBlock']
+    return (0,0,48,48)
+
 def InitFireSnake(sprite): # 158
     global ImageCache
     if 'FireSnake' not in ImageCache:
@@ -1306,6 +1312,12 @@ def InitFoo(sprite): # 238
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['Foo']
     return (-8,-16,29,32)
+
+def InitGiantWiggler(sprite): # 240
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['GiantWiggler']
+    return (-24,-64,174,82)
 
 def InitFallingLedgeBar(sprite): # 242
     global ImageCache
@@ -2381,6 +2393,7 @@ Initialisers = {
     151: InitPuffer,
     155: InitStarCoin,
     156: InitRedCoinRing,
+    157: InitBigBrickBlock,
     158: InitFireSnake,
     161: InitPipeBubbles,
     166: InitBlockTrain,
@@ -2421,6 +2434,7 @@ Initialisers = {
     233: InitBulber,
     237: InitPCoin,
     238: InitFoo,
+    240: InitGiantWiggler,
     242: InitFallingLedgeBar,
     253: InitSpecialCoin,
     255: InitBlock,
@@ -3923,9 +3937,11 @@ def LoadBasicSuite():
     ImageCache['Spiny'] = QtGui.QPixmap('reggiedata/sprites/spiny.png')
     ImageCache['SpinyU'] = QtGui.QPixmap('reggiedata/sprites/spiny_u.png')
     ImageCache['Wiggler'] = QtGui.QPixmap('reggiedata/sprites/wiggler.png')
+    ImageCache['GiantWiggler'] = QtGui.QPixmap('reggiedata/sprites/giant_wiggler.png')
     ImageCache['SuperGuide'] = QtGui.QPixmap('reggiedata/sprites/superguide_block.png')
     ImageCache['RouletteBlock'] = QtGui.QPixmap('reggiedata/sprites/roulette.png')
     ImageCache['GiantGlowBlock'] = QtGui.QPixmap('reggiedata/sprites/giant_glow_block.png')
+    ImageCache['BigBrickBlock'] = QtGui.QPixmap('reggiedata/sprites/big_block.png')
     ImageCache['UnderwaterLamp'] = QtGui.QPixmap('reggiedata/sprites/underwater_lamp.png')
     ImageCache['PlayerBlock'] = QtGui.QPixmap('reggiedata/sprites/player_block.png')
     ImageCache['PlayerBlockPlatform'] = QtGui.QPixmap('reggiedata/sprites/player_block_platform.png')
