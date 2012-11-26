@@ -1005,6 +1005,29 @@ def InitFireSnake(sprite): # 158
     sprite.customPainter = PaintGenericObject
     return (0,0,16,16)
 
+def InitPipeBubbles(sprite): # 161
+
+    if 'PipeBubblesU' not in ImageCache:
+        LoadPipeBubbles()
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizePipeBubbles
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (0,-52,32,53)
+
+def InitBlockTrain(sprite): # 166
+    global ImageCache
+    if 'BlockTrain' not in ImageCache:
+        ImageCache['BlockTrain'] = QtGui.QPixmap('reggiedata/sprites/block_train.png')
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeBlockTrain
+    sprite.customPaint = True
+    sprite.customPainter = PaintBlockTrain
+    
+    return (0,0,16,16)
+
 def InitScrewMushroom(sprite): # 172, 382
     global ImageCache
     if 'Bolt' not in ImageCache:
@@ -1993,6 +2016,12 @@ def InitSpinjumpCoin(sprite): # 417
     sprite.image = ImageCache['SpinjumpCoin']
     return (0,0,16,16)
 
+def InitGiantGlowBlock(sprite): # 420
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['GiantGlowBlock']
+    return (-16,-11,67,67)
+
 def InitPalmTree(sprite): # 424
     global ImageCache
     if 'PalmTree0' not in ImageCache:
@@ -2114,6 +2143,12 @@ def InitCagePeachReal(sprite): # 445
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['CagePeachReal']
     return (-18,-106,52,122)
+
+def InitUnderwaterLamp(sprite): # 447
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['UnderwaterLamp']
+    return (-27,-28,70,70)
 
 def InitMetalBar(sprite): # 448
     global ImageCache
@@ -2347,6 +2382,8 @@ Initialisers = {
     155: InitStarCoin,
     156: InitRedCoinRing,
     158: InitFireSnake,
+    161: InitPipeBubbles,
+    166: InitBlockTrain,
     172: InitScrewMushroom,
     173: InitGiantFloatingLog,
     175: InitFlyingQBlock,
@@ -2466,6 +2503,7 @@ Initialisers = {
     414: InitGabon,
     416: InitInvisibleOneUp,
     417: InitSpinjumpCoin,
+    420: InitGiantGlowBlock,
     422: InitBlock,
     423: InitBlock,
     424: InitPalmTree,
@@ -2479,6 +2517,7 @@ Initialisers = {
     443: InitReplayBlock,
     444: InitSwingingVine,
     445: InitCagePeachReal,
+    447: InitUnderwaterLamp,
     448: InitMetalBar,
     450: InitPipe,
     452: InitDoor,
@@ -2917,6 +2956,39 @@ def SizeFireSnake(sprite): # 158
         sprite.ysize = 32
         sprite.yoffset = -16
         sprite.image = ImageCache['FireSnake']
+
+def SizePipeBubbles(sprite): #161
+    direction = ord(sprite.spritedata[5]) & 15
+    if direction == 0:
+        direction = 'U'
+        sprite.xoffset = 0
+        sprite.yoffset = -52
+        sprite.xsize = 32
+        sprite.ysize = 53
+    elif direction == 1:
+        direction = 'D'
+        sprite.xoffset = 0
+        sprite.yoffset = 16
+        sprite.xsize = 32
+        sprite.ysize = 53
+    elif direction == 2:
+        direction = 'R'
+        sprite.xoffset = 16
+        sprite.yoffset = -16
+        sprite.xsize = 53
+        sprite.ysize = 32
+    elif direction == 3:
+        direction = 'L'
+        sprite.xoffset = -52
+        sprite.yoffset = -16
+        sprite.xsize = 53
+        sprite.ysize = 32
+
+    sprite.image = ImageCache['PipeBubbles%s' % direction]
+
+def SizeBlockTrain(sprite): # 166
+    length = ord(sprite.spritedata[5]) & 15
+    sprite.xsize = (length+3) * 16
 
 def SizeScrewMushroom(sprite): # 172, 382
     # I wish I knew what this does
@@ -3853,6 +3925,8 @@ def LoadBasicSuite():
     ImageCache['Wiggler'] = QtGui.QPixmap('reggiedata/sprites/wiggler.png')
     ImageCache['SuperGuide'] = QtGui.QPixmap('reggiedata/sprites/superguide_block.png')
     ImageCache['RouletteBlock'] = QtGui.QPixmap('reggiedata/sprites/roulette.png')
+    ImageCache['GiantGlowBlock'] = QtGui.QPixmap('reggiedata/sprites/giant_glow_block.png')
+    ImageCache['UnderwaterLamp'] = QtGui.QPixmap('reggiedata/sprites/underwater_lamp.png')
     ImageCache['PlayerBlock'] = QtGui.QPixmap('reggiedata/sprites/player_block.png')
     ImageCache['PlayerBlockPlatform'] = QtGui.QPixmap('reggiedata/sprites/player_block_platform.png')
     ImageCache['BoxGenerator'] = QtGui.QPixmap('reggiedata/sprites/box_generator.png')
@@ -4026,6 +4100,23 @@ def LoadFlyingBlocks():
     global ImageCache
     for color in ['yellow', 'blue', 'gray', 'red']:
         ImageCache['FlyingQBlock%s' % color] = QtGui.QPixmap('reggiedata/sprites/flying_qblock_%s.png' % color)
+
+def LoadPipeBubbles():
+    global ImageCache
+    transform90 = QtGui.QTransform()
+    transform180 = QtGui.QTransform()
+    transform270 = QtGui.QTransform()
+    transform90.rotate(90)
+    transform180.rotate(180)
+    transform270.rotate(270)
+    
+    for direction in ['U''D''R''L']:
+        image = QtGui.QImage('reggiedata/sprites/pipe_bubbles.png')
+        ImageCache['PipeBubbles'+'U'] = QtGui.QPixmap.fromImage(image)
+        ImageCache['PipeBubbles'+'R'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
+        ImageCache['PipeBubbles'+'D'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
+        ImageCache['PipeBubbles'+'L'] = QtGui.QPixmap.fromImage(image.transformed(transform270))
+
 
 def LoadPipeCannon():
     for i in xrange(8):
@@ -4220,6 +4311,12 @@ def PaintPurplePole(sprite, painter):
     painter.drawPixmap(0, 0, ImageCache['VertPoleTop'])
     painter.drawTiledPixmap(0, 24, 24, sprite.ysize*1.5 - 48, ImageCache['VertPole'])
     painter.drawPixmap(0, sprite.ysize*1.5 - 24, ImageCache['VertPoleBottom'])
+
+def PaintBlockTrain(sprite, painter):
+    endpiece = ImageCache['BlockTrain']
+    painter.drawPixmap(0, 0, endpiece)
+    painter.drawTiledPixmap(24, 0, sprite.xsize*1.5 - 48, 24, ImageCache['BlockTrain'])
+    painter.drawPixmap(sprite.xsize*1.5 - 24, 0, endpiece)
 
 def PaintHorizontalRope(sprite, painter):
     endpiece = ImageCache['HorzRopeEnd']
