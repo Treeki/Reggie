@@ -1330,6 +1330,13 @@ def InitFallingLedgeBar(sprite): # 242
     
     return (0,0,80,16)
 
+def InitRCEDBlock(sprite): #252
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeBlock
+    sprite.customPaint = True
+    sprite.customPainter = PaintRCEDBlock
+    return (0,0,16,16)
+
 def InitSpecialCoin(sprite): # 253, 371, 390
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
@@ -2461,6 +2468,7 @@ Initialisers = {
     238: InitFoo,
     240: InitGiantWiggler,
     242: InitFallingLedgeBar,
+    252: InitRCEDBlock,
     253: InitSpecialCoin,
     255: InitBlock,
     256: InitBlock,
@@ -3129,6 +3137,7 @@ def SizeBlock(sprite): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     # 208 = Question Block (unused)
     # 209 = Brick Block
     # 221 = Invisible Block
+    # 252 = Rotation Controlled Event Deactivation Block
     # 255 = Rotating Question Block
     # 256 = Rotating Brick Block
     # 402 = Line Question Block
@@ -3140,7 +3149,7 @@ def SizeBlock(sprite): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     contents = ord(sprite.spritedata[5]) & 0xF
     
     # SET TILE TYPE
-    if type == 207 or type == 208 or type == 255 or type == 402 or type == 422:
+    if type == 207 or type == 208 or type == 252 or type == 255 or type == 402 or type == 422:
         sprite.tilenum = 49
     elif type == 209 or type == 256 or type == 403 or type == 423:
         sprite.tilenum = 48
@@ -3153,8 +3162,11 @@ def SizeBlock(sprite): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     # 6 = Mini Shroom, 7 = Star, 8 = Continuous Star, 9 = Yoshi Egg, 10 = 10 Coins,
     # 11 = 1-up, 12 = Vine, 13 = Spring, 14 = Shroom/Coin, 15 = Ice Flower, 16 = Toad
     
+
     if type == 422 or type == 423: # Force Toad
         contents = 16
+    elif type == 252: # Force Empty
+        contents = 0
     elif type == 255 or type == 256: # Contents is a different nybble here
         contents = ord(sprite.spritedata[4]) & 0xF
     
@@ -4298,6 +4310,17 @@ def PaintBlock(sprite, painter):
     if Tiles[sprite.tilenum] != None:
         painter.drawPixmap(0, 0, Tiles[sprite.tilenum])
     painter.drawPixmap(0, 0, sprite.image)
+
+def PaintRCEDBlock(sprite, painter):
+    painter.setRenderHint(QtGui.QPainter.Antialiasing)
+    if Tiles[sprite.tilenum] != None:
+        painter.drawPixmap(0, 0, Tiles[sprite.tilenum])
+    painter.drawPixmap(0, 0, sprite.image)
+    painter.save()
+    painter.setOpacity(0.5)
+    originalImg = ImageCache['RCEDBlock']
+    painter.drawPixmap(0, 0, originalImage.fill(QColor('red')))
+    painter.restore()
 
 def PaintWoodenPlatform(sprite, painter):
     if sprite.colour == 0:
