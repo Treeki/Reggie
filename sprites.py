@@ -1982,6 +1982,25 @@ def InitSpinyCheep(sprite): # 395
     sprite.image = ImageCache['SpinyCheep']
     return (-1,-2,19,19)
 
+def InitMoveWhenOn(sprite): # 396
+    if 'MoveWhenOnL' not in ImageCache:
+        LoadMoveWhenOn()
+
+    raw_size = ord(sprite.spritedata[5]) & 0xF
+    if raw_size == 0:
+        xoffset = -16
+        xsize = 32
+    else:
+        xoffset = 0
+        xsize = raw_size*16
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeMoveWhenOn
+    sprite.customPaint = True
+    sprite.customPainter = PaintMoveWhenOn
+
+    return (xoffset,-2,xsize,20)
+
 def InitBlock(sprite): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     sprite.dynamicSize = True
     sprite.dynSizer = SizeBlock
@@ -2511,6 +2530,7 @@ Initialisers = {
     393: InitPropellerBlock,
     394: InitLemmyBall,
     395: InitSpinyCheep,
+    396: InitMoveWhenOn,
     402: InitBlock,
     403: InitBlock,
     413: InitWendyRing,
@@ -2570,8 +2590,6 @@ def SizeHorzMovingPlatform(sprite): # 23
     # set colour
     sprite.colour = (ord(sprite.spritedata[3]) >> 4) & 1
     
-    sprite.aux.update()
-
 def SizeBuzzyBeetle(sprite): # 24
     upsidedown = ord(sprite.spritedata[5]) & 1
     
@@ -3804,7 +3822,19 @@ def SizeBush(sprite): # 387
         sprite.yoffset = -80
         sprite.xsize = 108
         sprite.ysize = 86
-    
+
+def SizeMoveWhenOn(sprite): # 396
+    # get width
+    raw_size = ord(sprite.spritedata[5]) & 0xF
+    if raw_size == 0:
+        sprite.xoffset = -16
+        sprite.xsize = 32
+    else:
+        sprite.xoffset = 0
+        sprite.xsize = raw_size*16
+
+    #set direction
+    sprite.direction =(ord(sprite.spritedata[3]) >> 4)
 
 def SizeGabon(sprite): # 414
     throwdir = ord(sprite.spritedata[5]) & 1
@@ -4000,6 +4030,27 @@ def LoadPlatformImages():
     ImageCache['BonePlatformM'] = QtGui.QPixmap('reggiedata/sprites/bone_platform_middle.png')
     ImageCache['BonePlatformR'] = QtGui.QPixmap('reggiedata/sprites/bone_platform_right.png')
     ImageCache['TiltingGirder'] = QtGui.QPixmap('reggiedata/sprites/tilting_girder.png')
+
+def LoadMoveWhenOn():
+    global ImageCache
+    ImageCache['MoveWhenOnL'] = QtGui.QPixmap('reggiedata/sprites/mwo_left.png')
+    ImageCache['MoveWhenOnM'] = QtGui.QPixmap('reggiedata/sprites/mwo_middle.png')
+    ImageCache['MoveWhenOnR'] = QtGui.QPixmap('reggiedata/sprites/mwo_right.png')
+    ImageCache['MoveWhenOnC'] = QtGui.QPixmap('reggiedata/sprites/mwo_circle.png')
+
+    transform90 = QtGui.QTransform()
+    transform180 = QtGui.QTransform()
+    transform270 = QtGui.QTransform()
+    transform90.rotate(90)
+    transform180.rotate(180)
+    transform270.rotate(270)
+    
+    for direction in ['R''L''U''D']:
+        image = QtGui.QImage('reggiedata/sprites/sm_arrow.png')
+        ImageCache['SmArrow'+'R'] = QtGui.QPixmap.fromImage(image)
+        ImageCache['SmArrow'+'D'] = QtGui.QPixmap.fromImage(image.transformed(transform90))
+        ImageCache['SmArrow'+'L'] = QtGui.QPixmap.fromImage(image.transformed(transform180))
+        ImageCache['SmArrow'+'U'] = QtGui.QPixmap.fromImage(image.transformed(transform270))        
 
 def LoadDSStoneBlocks():
     global ImageCache
@@ -4245,6 +4296,34 @@ def PaintWoodenPlatform(sprite, painter):
         # normal rendering
         painter.drawPixmap((sprite.xsize - 16) * 1.5, 0, ImageCache[colour + 'PlatformR'])
         painter.drawPixmap(0, 0, ImageCache[colour + 'PlatformL'])
+
+def PaintMoveWhenOn(sprite, painter):
+    if sprite.direction == 0:
+        direction = 'R'
+    elif sprite.direction == 1:
+        direction = 'L'
+    elif sprite.direction == 2:
+        direction = 'U'
+    elif sprite.direction == 3:
+        direction = 'D'
+
+    raw_size = ord(sprite.spritedata[5]) & 0xF
+
+    if raw_size == 0:
+        # hack for the glitchy version
+        painter.drawPixmap(0, 2, ImageCache['MoveWhenOnR'])
+        painter.drawPixmap(24, 2, ImageCache['MoveWhenOnL'])
+    elif raw_size == 1:
+        painter.drawPixmap(0, 2, ImageCache['MoveWhenOnM'])
+    else:
+        painter.drawPixmap(0, 2, ImageCache['MoveWhenOnL'])
+        if raw_size > 2:
+            painter.drawTiledPixmap(24, 2, (raw_size-2)*24, 24, ImageCache['MoveWhenOnM'])
+        painter.drawPixmap((sprite.xsize*1.5)-24, 2, ImageCache['MoveWhenOnR'])
+
+    center = (sprite.xsize / 2) * 1.5
+    painter.drawPixmap(center - 14, 0, ImageCache['MoveWhenOnC'])
+    painter.drawPixmap(center - 12, 1, ImageCache['SmArrow%s' % direction])
 
 def PaintPlatformGenerator(sprite, painter):
     PaintWoodenPlatform(sprite, painter)
