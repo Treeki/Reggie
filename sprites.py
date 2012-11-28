@@ -2048,10 +2048,16 @@ def InitSpinjumpCoin(sprite): # 417
     return (0,0,16,16)
 
 def InitGiantGlowBlock(sprite): # 420
+    global ImageCache
+    if 'GiantGlowBlock' not in ImageCache:
+        ImageCache['GiantGlowBlock'] = QtGui.QPixmap('reggiedata/sprites/giant_glow_block.png')
+        ImageCache['GiantGlowBlockOff'] = QtGui.QPixmap('reggiedata/sprites/giant_glow_block_off.png')
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeGiantGlowBlock
     sprite.customPaint = True
     sprite.customPainter = PaintGenericObject
-    sprite.image = ImageCache['GiantGlowBlock']
-    return (-16,-11,67,67)
+    return (-16,-19,67,67)
 
 def InitPalmTree(sprite): # 424
     global ImageCache
@@ -3858,6 +3864,21 @@ def SizeGabon(sprite): # 414
         sprite.xsize = 29
         sprite.ysize = 49
     
+def SizeGiantGlowBlock(sprite): #420
+    type = ord(sprite.spritedata[4]) >> 4
+
+    if type == 0:
+        sprite.xsize = 67
+        sprite.ysize = 67
+        sprite.xoffset = -16
+        sprite.yoffset = -19
+        sprite.image = ImageCache['GiantGlowBlock']
+    else:
+        sprite.xsize = 32
+        sprite.ysize = 32
+        sprite.xoffset = 0
+        sprite.yoffset = 0
+        sprite.image = ImageCache['GiantGlowBlockOff']
 
 def SizePalmTree(sprite): # 424
     size = ord(sprite.spritedata[5]) & 7
@@ -3971,6 +3992,7 @@ def LoadBasicSuite():
     ImageCache['SuperGuide'] = QtGui.QPixmap('reggiedata/sprites/superguide_block.png')
     ImageCache['RouletteBlock'] = QtGui.QPixmap('reggiedata/sprites/roulette.png')
     ImageCache['GiantGlowBlock'] = QtGui.QPixmap('reggiedata/sprites/giant_glow_block.png')
+    ImageCache['GiantGlowBlockOff'] = QtGui.QPixmap('reggiedata/sprites/giant_glow_block_off.png')
     ImageCache['BigBrickBlock'] = QtGui.QPixmap('reggiedata/sprites/big_block.png')
     ImageCache['UnderwaterLamp'] = QtGui.QPixmap('reggiedata/sprites/underwater_lamp.png')
     ImageCache['PlayerBlock'] = QtGui.QPixmap('reggiedata/sprites/player_block.png')
