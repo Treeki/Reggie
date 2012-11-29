@@ -184,6 +184,12 @@ def InitMegagoomba(sprite): # 199
     sprite.image = ImageCache['Megagoomba']
     return (-11,-37,43,54)
 
+def InitChestnutGoomba(sprite): # 170
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['ChestnutGoomba']
+    return (-6,-8,30,25)
+
 def InitHorzMovingPlatform(sprite): # 23
     if 'WoodenPlatformL' not in ImageCache:
         LoadPlatformImages()
@@ -2429,6 +2435,7 @@ Initialisers = {
     158: InitFireSnake,
     161: InitPipeBubbles,
     166: InitBlockTrain,
+    170: InitChestnutGoomba,
     172: InitScrewMushroom,
     173: InitGiantFloatingLog,
     175: InitFlyingQBlock,
@@ -3989,6 +3996,7 @@ def LoadBasicSuite():
     ImageCache['Microgoomba'] = QtGui.QPixmap('reggiedata/sprites/microgoomba.png')
     ImageCache['Giantgoomba'] = QtGui.QPixmap('reggiedata/sprites/giantgoomba.png')
     ImageCache['Megagoomba'] = QtGui.QPixmap('reggiedata/sprites/megagoomba.png')
+    ImageCache['ChestnutGoomba'] = QtGui.QPixmap('reggiedata/sprites/chestnut_goomba.png')
     ImageCache['KoopaG'] = QtGui.QPixmap('reggiedata/sprites/koopa_green.png')
     ImageCache['KoopaR'] = QtGui.QPixmap('reggiedata/sprites/koopa_red.png')
     ImageCache['KoopaShellG'] = QtGui.QPixmap('reggiedata/sprites/koopa_green_shell.png')
@@ -4013,6 +4021,7 @@ def LoadBasicSuite():
     ImageCache['StarCoin'] = QtGui.QPixmap('reggiedata/sprites/starcoin.png')
     ImageCache['InvisibleOneUp'] = QtGui.QPixmap('reggiedata/sprites/invisible_1up.png')
     ImageCache['ToadBalloon'] = QtGui.QPixmap('reggiedata/sprites/toad_balloon.png')
+    ImageCache['RCEDBlock'] = QtGui.QPixmap('reggiedata/sprites/rced_block.png')
     ImageCache['PipePlantUp'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_up.png')
     ImageCache['PipePlantDown'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_down.png')
     ImageCache['PipePlantLeft'] = QtGui.QPixmap('reggiedata/sprites/piranha_pipe_left.png')
@@ -4316,11 +4325,7 @@ def PaintRCEDBlock(sprite, painter):
     if Tiles[sprite.tilenum] != None:
         painter.drawPixmap(0, 0, Tiles[sprite.tilenum])
     painter.drawPixmap(0, 0, sprite.image)
-    painter.save()
-    painter.setOpacity(0.5)
-    originalImg = ImageCache['RCEDBlock']
-    painter.drawPixmap(0, 0, originalImage.fill(QColor('red')))
-    painter.restore()
+    painter.drawPixmap(0, 0, ImageCache['RCEDBlock'])
 
 def PaintWoodenPlatform(sprite, painter):
     if sprite.colour == 0:
