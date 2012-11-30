@@ -1744,10 +1744,12 @@ def InitPlayerBlockPlatform(sprite): #333
 
 def InitCheepGiant(sprite): # 334
     global ImageCache
-    if 'CheepGiantL' not in ImageCache:
-        cheep = QtGui.QImage('reggiedata/sprites/cheep_giant.png')
-        ImageCache['CheepGiantL'] = QtGui.QPixmap.fromImage(cheep)
-        ImageCache['CheepGiantR'] = QtGui.QPixmap.fromImage(cheep.mirrored(True, False))
+    if 'CheepGiantRedL' not in ImageCache:
+        cheep = QtGui.QImage('reggiedata/sprites/cheep_giant_red.png')
+        ImageCache['CheepGiantRedL'] = QtGui.QPixmap.fromImage(cheep)
+        ImageCache['CheepGiantRedR'] = QtGui.QPixmap.fromImage(cheep.mirrored(True, False))
+        ImageCache['CheepGiantGreen'] = QtGui.QPixmap('reggiedata/sprites/cheep_giant_green.png')
+        ImageCache['CheepGiantYellow'] = QtGui.QPixmap('reggiedata/sprites/cheep_giant_yellow.png')
     
     sprite.dynamicSize = True
     sprite.dynSizer = SizeCheepGiant
@@ -3663,13 +3665,25 @@ def SizeRopeLadder(sprite): # 330
     elif size == 2:
         sprite.ysize = 140
 
-def SizeCheepGiant(sprite): # 334
-    mode = ord(sprite.spritedata[5]) & 0xF
+def SizeCheepGiant(sprite): # 334 (-6,-7,28,25)
+    type = ord(sprite.spritedata[5]) & 0xF
     
-    if mode != 3:
-        sprite.image = ImageCache['CheepGiantL']
-    else:
-        sprite.image = ImageCache['CheepGiantR']
+    if type == 0:
+        sprite.xsize = 28
+        sprite.ysize = 25
+        sprite.image = ImageCache['CheepGiantRedL']
+    elif type == 3:
+        sprite.xsize = 28
+        sprite.ysize = 25
+        sprite.image = ImageCache['CheepGiantRedR']
+    elif type == 7:
+        sprite.xsize = 28
+        sprite.ysize = 26
+        sprite.image = ImageCache['CheepGiantGreen']
+    elif type == 8:
+        sprite.xsize = 27
+        sprite.ysize = 28
+        sprite.image = ImageCache['CheepGiantYellow']
 
 def SizePipe(sprite): # 339, 353, 377, 378, 379, 380, 450 
     # Sprite types:
