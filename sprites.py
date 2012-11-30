@@ -1485,7 +1485,16 @@ def InitCastleGear(sprite): #274
     sprite.image = ImageCache['CastleGearL'] if isBig else ImageCache['CastleGearS']
     return (-(((sprite.image.width()/2.0)-12)*(2.0/3.0)), -(((sprite.image.height()/2.0)-12)*(2.0/3.0)), sprite.image.width()*(2.0/3.0), sprite.image.height()*(2.0/3.0))
     
-    
+def InitFiveEnemyRaft(sprite): # 275
+    global ImageCache
+    if 'FiveEnemyRaft' not in ImageCache:
+        ImageCache['FiveEnemyRaft'] = QtGui.QPixmap('reggiedata/sprites/5_enemy_max_raft.png')
+
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['FiveEnemyRaft']
+    return(0,-8,385,38)
+
 def InitGiantIceBlock(sprite): # 280
     global ImageCache
     if 'IcicleSmall' not in ImageCache:
@@ -2512,6 +2521,7 @@ Initialisers = {
     271: InitLittleMouser,
     272: InitIceBro,
     274: InitCastleGear,
+    275: InitFiveEnemyRaft,
     276: InitDoor,
     277: InitDoor,
     278: InitDoor,
@@ -4066,6 +4076,7 @@ def LoadBasicSuite():
     ImageCache['PipeFiretrapDown'] = QtGui.QPixmap('reggiedata/sprites/firetrap_pipe_down.png')
     ImageCache['PipeFiretrapLeft'] = QtGui.QPixmap('reggiedata/sprites/firetrap_pipe_left.png')
     ImageCache['PipeFiretrapRight'] = QtGui.QPixmap('reggiedata/sprites/firetrap_pipe_right.png')
+    ImageCache['FiveEnemyRaft'] = QtGui.QPixmap('reggiedata/sprites/5_enemy_max_raft.png')
     
     GP = QtGui.QImage('reggiedata/sprites/ground_piranha.png')
     ImageCache['GroundPiranha'] = QtGui.QPixmap.fromImage(GP)
