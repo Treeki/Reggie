@@ -1862,10 +1862,7 @@ def InitBrownBlock(sprite):
     if(sprite.type == 354): return (0,0,16,16)
     sprite.aux = AuxiliaryTrackObject(sprite, 16, 16, AuxiliaryTrackObject.Horizontal)
     return (0,0,16,16)
-    
-
-
-
+ 
 def InitFruit(sprite): # 357
     sprite.dynamicSize = True
     sprite.dynSizer = SizeFruit
@@ -1882,6 +1879,19 @@ def InitWallLantern(sprite): # 359
     sprite.customPainter = PaintGenericObject
     sprite.image = ImageCache['WallLantern']
     return (0,8,16,16)
+
+def InitCrystalBlock(sprite): #361
+    global ImageCache
+    if 'CrystalBlock0' not in ImageCache:
+        for size in [0,1,2]:
+            ImageCache['CrystalBlock%d' % size] = QtGui.QPixmap('reggiedata/sprites/crystal_block_%d' % size)
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeCrystalBlock
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    
+    return (0,0,201,172)
 
 def InitColouredBox(sprite): # 362
     global ImageCache
@@ -2574,6 +2584,7 @@ Initialisers = {
     357: InitFruit,
     359: InitWallLantern,
     360: InitRollingHillWithPipe,
+    361: InitCrystalBlock,
     362: InitColouredBox,
     366: InitCubeKinokoRot,
     367: InitCubeKinokoLine,
@@ -3828,6 +3839,21 @@ def SizeFruit(sprite): # 357
         sprite.image = ImageCache['Fruit']
     else:
         sprite.image = ImageCache['Cookie']
+
+def SizeCrystalBlock(sprite): #361
+    size = ord(sprite.spritedata[4]) & 15
+
+    if size == 0:
+        sprite.xsize = 201
+        sprite.ysize = 172
+    elif size == 1:
+        sprite.xsize = 267
+        sprite.ysize = 169
+    elif size == 2:
+        sprite.xsize = 348
+        sprite.ysize = 110
+
+    sprite.image = ImageCache['CrystalBlock%d' % size]
 
 def SizeColouredBox(sprite): # 362
     sprite.colour = (ord(sprite.spritedata[3]) >> 4) & 3
