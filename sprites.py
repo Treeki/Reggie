@@ -2334,6 +2334,28 @@ def InitSuperGuideBlock(sprite): # 477
     sprite.image = ImageCache['SuperGuide']
     return (-4,-4,24,24)
 
+def InitBowserSwitchSm(sprite): # 478
+    if 'ESwitch' not in ImageCache:
+        LoadSwitches()
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeSwitch
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.switchType = 'E'
+    return (0,0,16,16)
+
+def InitBowserSwitchLg(sprite): # 479
+    if 'ESwitchLg' not in ImageCache:
+        LoadSwitches()
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeSwitch
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.switchType = 'EL'
+    return (-16,-32,48,48)
+
 Initialisers = {
     20: InitGoomba,
     21: InitParagoomba,
@@ -2588,6 +2610,8 @@ Initialisers = {
     471: InitLiftDokan,
     476: InitFlyingWrench,
     477: InitSuperGuideBlock,
+    478: InitBowserSwitchSm,
+    479: InitBowserSwitchLg,
 }
 
 # ---- Dynamic Sizing ----
@@ -2683,9 +2707,21 @@ def SizeVertMovingPlatform(sprite): # 31
     
     sprite.aux.update()
 
-def SizeSwitch(sprite): # 40,41,42
+def SizeSwitch(sprite): # 40,41,42,478,479
+    type = sprite.type
     upsideDown = ord(sprite.spritedata[5]) & 1
     
+    if type == 479:
+        sprite.xoffset = -16
+        sprite.yoffset = -32
+        sprite.xsize = 48
+        sprite.ysize = 48
+    else:
+        sprite.xoffset = 0
+        sprite.yoffset = 0
+        sprite.xsize = 16
+        sprite.xsize = 16
+
     if upsideDown == 0:
         sprite.image = ImageCache[sprite.switchType + 'Switch']
     else:
@@ -4074,6 +4110,21 @@ def LoadPlatformImages():
     ImageCache['BonePlatformR'] = QtGui.QPixmap('reggiedata/sprites/bone_platform_right.png')
     ImageCache['TiltingGirder'] = QtGui.QPixmap('reggiedata/sprites/tilting_girder.png')
 
+# will be needed someday
+# def LoadCannonImages(): 
+    # global ImageCache
+    # ImageCache['CannonFL'] = QtGui.QPixmap('reggiedata/sprites/cannon_front_left.png')
+    # ImageCache['CannonFR'] = QtGui.QPixmap('reggiedata/sprites/cannon_front_right.png')
+    # ImageCache['CannonbigFL'] = QtGui.QPixmap('reggiedata/sprites/cannonbig_front_left.png')
+    # ImageCache['CannonbigFR'] = QtGui.QPixmap('reggiedata/sprites/cannon_front_right.png')
+    # ImageCache['CannonFU'] = QtGui.QPixmap('reggiedata/sprites/cannon_front_up.png')
+    # ImageCache['CannonbigFD'] = QtGui.QPixmap('reggiedata/sprites/cannonbig_front_down.png')
+    # ImageCache['CannonEL'] = QtGui.QPixmap('reggiedata/sprites/cannon_end_left.png')
+    # ImageCache['CannonbigEL'] = QtGui.QPixmap('reggiedata/sprites/cannonbig_end_left.png')
+    # ImageCache['CannonM'] = QtGui.QPixmap('reggiedata/sprites/cannon_middle.png')
+    # ImageCache['CannonbigM'] = QtGui.QPixmap('reggiedata/sprites/cannonbig_middle.png')
+
+
 def LoadMoveWhenOn():
     global ImageCache
     ImageCache['MoveWhenOnL'] = QtGui.QPixmap('reggiedata/sprites/mwo_left.png')
@@ -4111,12 +4162,15 @@ def LoadSwitches():
     q = QtGui.QImage('reggiedata/sprites/q_switch.png')
     p = QtGui.QImage('reggiedata/sprites/p_switch.png')
     e = QtGui.QImage('reggiedata/sprites/e_switch.png')
+    elg = QtGui.QImage('reggiedata/sprites/e_switch_lg.png')
     ImageCache['QSwitch'] = QtGui.QPixmap.fromImage(q)
     ImageCache['PSwitch'] = QtGui.QPixmap.fromImage(p)
     ImageCache['ESwitch'] = QtGui.QPixmap.fromImage(e)
+    ImageCache['ELSwitch'] = QtGui.QPixmap.fromImage(elg)
     ImageCache['QSwitchU'] = QtGui.QPixmap.fromImage(q.mirrored(True, True))
     ImageCache['PSwitchU'] = QtGui.QPixmap.fromImage(p.mirrored(True, True))
     ImageCache['ESwitchU'] = QtGui.QPixmap.fromImage(e.mirrored(True, True))
+    ImageCache['ELSwitchU'] = QtGui.QPixmap.fromImage(elg.mirrored(True, True))
     ImageCache['QSwitchBlock'] = QtGui.QPixmap('reggiedata/sprites/q_switch_block.png')
     ImageCache['PSwitchBlock'] = QtGui.QPixmap('reggiedata/sprites/p_switch_block.png')
     ImageCache['ESwitchBlock'] = QtGui.QPixmap('reggiedata/sprites/e_switch_block.png')
@@ -4374,6 +4428,7 @@ def PaintMoveWhenOn(sprite, painter):
     center = (sprite.xsize / 2) * 1.5
     painter.drawPixmap(center - 14, 0, ImageCache['MoveWhenOnC'])
     painter.drawPixmap(center - 12, 1, ImageCache['SmArrow%s' % direction])
+
 
 def PaintPlatformGenerator(sprite, painter):
     PaintWoodenPlatform(sprite, painter)
