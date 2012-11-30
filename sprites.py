@@ -1083,6 +1083,16 @@ def InitRouletteBlock(sprite): # 176
     sprite.image = ImageCache['RouletteBlock']
     return (-6,-6,29,29)
 
+def InitFireChomp(sprite): #177
+    global ImageCache
+    if 'FireChomp' not in ImageCache:
+         ImageCache['FireChomp'] = QtGui.QPixmap('reggiedata/sprites/fire_chomp.png')
+
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['FireChomp']
+    return (-2,-20,58,40)
+
 def InitScalePlatform(sprite): # 178
     global ImageCache
     if 'WoodenPlatformL' not in ImageCache:
@@ -2473,6 +2483,7 @@ Initialisers = {
     173: InitGiantFloatingLog,
     175: InitFlyingQBlock,
     176: InitRouletteBlock,
+    177: InitFireChomp,
     178: InitScalePlatform,
     180: InitCheepChomp,
     182: InitDoor,
