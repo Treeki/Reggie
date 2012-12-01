@@ -1735,6 +1735,29 @@ def InitGhostHouseStand(sprite): # 325
     sprite.image = ImageCache['GhostHouseStand']
     return (0,-16,16,32)
 
+def InitKingBill(sprite): #326
+    global ImageCache
+    if 'KingBillL' not in ImageCache:
+        kbill = QtGui.QImage('reggiedata/sprites/king_bill.png')
+        transform90 = QtGui.QTransform()
+        transform270 = QtGui.QTransform()
+        transform90.rotate(90)
+        transform270.rotate(270)
+
+        ImageCache['KingBillL'] = QtGui.QPixmap.fromImage(kbill)
+        ImageCache['KingBillR'] = QtGui.QPixmap.fromImage(kbill.mirrored(True, False))
+        ImageCache['KingBillD'] = QtGui.QPixmap.fromImage(kbill.transformed(transform270))
+        ImageCache['KingBillU'] = QtGui.QPixmap.fromImage(kbill.mirrored(True, False).transformed(transform270))
+
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeKingBill
+    sprite.alpha = 0.50
+    sprite.setZValue(1)
+    sprite.customPaint = True
+    sprite.customPainter = PaintAlphaObject
+    return (0,-120,245,256)
+
 def InitRopeLadder(sprite): # 330
     global ImageCache
     if 'RopeLadder0' not in ImageCache:
@@ -2580,6 +2603,7 @@ Initialisers = {
     318: InitBoxGenerator,
     321: InitArrowBlock,
     325: InitGhostHouseStand,
+    326: InitKingBill,
     330: InitRopeLadder,
     333: InitPlayerBlockPlatform,
     334: InitCheepGiant,
@@ -3688,6 +3712,36 @@ def SizeBoltBox(sprite): # 316
 def SizeArrowBlock(sprite): # 321
     direction = ord(sprite.spritedata[5]) & 3
     sprite.image = ImageCache['ArrowBlock%d' % direction]
+
+def SizeKingBill(sprite): #326 (0,-120,245,256)
+    direction = ord(sprite.spritedata[5]) & 15
+
+    if direction == 0:
+        direction = 'L'
+        sprite.xoffset = 0
+        sprite.yoffset = -120
+        sprite.xsize = 245
+        sprite.ysize = 256
+    elif direction == 1:
+        direction = 'R'
+        sprite.xoffset = -229
+        sprite.yoffset = -120
+        sprite.xsize = 245
+        sprite.ysize = 256
+    elif direction == 2:
+        direction = 'D'
+        sprite.xoffset = -144
+        sprite.yoffset = -227
+        sprite.xsize = 256
+        sprite.ysize = 245
+    elif direction == 3:
+        direction = 'U'
+        sprite.xoffset = -144
+        sprite.yoffset = 0
+        sprite.xsize = 256
+        sprite.ysize = 245
+
+    sprite.image = ImageCache['KingBill%s' % direction]
 
 def SizeRopeLadder(sprite): # 330
     size = ord(sprite.spritedata[5])
