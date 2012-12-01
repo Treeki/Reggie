@@ -2045,6 +2045,18 @@ def InitMoveWhenOn(sprite): # 396
 
     return (xoffset,-2,xsize,20)
 
+def InitGhostHouseBox(sprite): # 397
+    global ImageCache
+    if 'GHBoxTL' not in ImageCache:
+        for direction in ['TL','T','TR','L','M','R','BL','B','BR']:
+            ImageCache['GHBox%s' % direction] = QtGui.QPixmap('reggiedata/sprites/ghbox_%s.png' % direction)
+    
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeGhostHouseBox
+    sprite.customPaint = True
+    sprite.customPainter = PaintGhostHouseBox
+    return (0,0,16,16)
+
 def InitBlock(sprite): # 207, 208, 209, 221, 255, 256, 402, 403, 422, 423
     sprite.dynamicSize = True
     sprite.dynSizer = SizeBlock
@@ -2608,6 +2620,7 @@ Initialisers = {
     394: InitLemmyBall,
     395: InitSpinyCheep,
     396: InitMoveWhenOn,
+    397: InitGhostHouseBox,
     402: InitBlock,
     403: InitBlock,
     413: InitWendyRing,
@@ -3958,6 +3971,13 @@ def SizeMoveWhenOn(sprite): # 396
     #set direction
     sprite.direction =(ord(sprite.spritedata[3]) >> 4)
 
+def SizeGhostHouseBox(sprite): # 397
+    height = ord(sprite.spritedata[4]) >> 4
+    width = ord(sprite.spritedata[5]) & 15
+    
+    sprite.xsize = ((width + 2) * 16)
+    sprite.ysize = ((height + 2) * 16)
+
 def SizeGabon(sprite): # 414
     throwdir = ord(sprite.spritedata[5]) & 1
     facing = ord(sprite.spritedata[4]) & 1
@@ -4641,6 +4661,23 @@ def PaintColouredBox(sprite, painter):
     painter.drawTiledPixmap(xsize-25, 25, 25, ysize-50, ImageCache[prefix+'R'])
     
     painter.drawTiledPixmap(25, 25, xsize-50, ysize-50, ImageCache[prefix+'M'])
+
+def PaintGhostHouseBox(sprite, painter):
+    prefix = 'GHBox'
+    xsize = sprite.xsize*1.5
+    ysize = sprite.ysize*1.5
+    
+    painter.drawPixmap(0, 0, ImageCache[prefix+'TL'])
+    painter.drawPixmap(xsize-24, 0, ImageCache[prefix+'TR'])
+    painter.drawPixmap(0, ysize-24, ImageCache[prefix+'BL'])
+    painter.drawPixmap(xsize-24, ysize-24, ImageCache[prefix+'BR'])
+    
+    painter.drawTiledPixmap(24, 0, xsize-48, 24, ImageCache[prefix+'T'])
+    painter.drawTiledPixmap(24, ysize-24, xsize-48, 24, ImageCache[prefix+'B'])
+    painter.drawTiledPixmap(0, 24, 24, ysize-48, ImageCache[prefix+'L'])
+    painter.drawTiledPixmap(xsize-24, 24, 24, ysize-48, ImageCache[prefix+'R'])
+    
+    painter.drawTiledPixmap(24, 24, xsize-48, ysize-48, ImageCache[prefix+'M'])
 
 def PaintBoltBox(sprite, painter):
     xsize = sprite.xsize*1.5
