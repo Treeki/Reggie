@@ -2176,6 +2176,16 @@ def InitToad(sprite): # 432
     sprite.image = ImageCache['Toad']
     return (-1,-16,19,32)
 
+def InitFloatingQBlock(sprite): #433
+    global ImageCache
+    if 'FloatingQ' not in ImageCache:
+        ImageCache['FloatingQ'] = QtGui.QPixmap('reggiedata/sprites/floating_qblock.png')
+
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['FloatingQ']
+    return (-6,-6,28,28)
+
 def InitWarpCannon(sprite): # 434
     global ImageCache
     if 'Warp0' not in ImageCache:
@@ -2202,6 +2212,18 @@ def InitPurplePole(sprite): # 437
     sprite.customPainter = PaintPurplePole
     
     return (0,0,16,16)
+
+def InitCageBlocks(sprite): #438
+    global ImageCache
+    if 'CageBlock0' not in ImageCache:
+        for type in xrange(8):
+            ImageCache['CageBlock%d' % type] = QtGui.QPixmap('reggiedata/sprites/cage_block_%d.png' % type)
+
+    sprite.dynamicSize = True
+    sprite.dynSizer = SizeCageBlocks
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    return (120,120,240,240)
 
 def InitCagePeachFake(sprite): # 439
     global ImageCache
@@ -2668,8 +2690,10 @@ Initialisers = {
     424: InitPalmTree,
     425: InitJellybeam,
     432: InitToad,
+    433: InitFloatingQBlock,
     434: InitWarpCannon,
     437: InitPurplePole,
+    438: InitCageBlocks,
     439: InitCagePeachFake,
     440: InitHorizontalRope,
     441: InitMushroomPlatform,
@@ -4096,6 +4120,37 @@ def SizeWarpCannon(sprite): # 434
 def SizePurplePole(sprite): # 437
     length = ord(sprite.spritedata[5])
     sprite.ysize = (length+3) * 16
+
+def SizeCageBlocks(sprite): #438
+    type = ord(sprite.spritedata[4]) & 15
+
+    if type == 0:
+        sprite.xoffset = -112
+        sprite.yoffset = -112
+        sprite.xsize = 240
+        sprite.ysize = 240
+    elif type == 1:
+        sprite.xoffset = -112
+        sprite.yoffset = -112
+        sprite.xsize = 240
+        sprite.ysize = 240
+    elif type == 2:
+        sprite.xoffset = -97
+        sprite.yoffset = -81
+        sprite.xsize = 210
+        sprite.ysize = 177
+    elif type == 3:
+        sprite.xoffset = -80
+        sprite.yoffset = -96
+        sprite.xsize = 176
+        sprite.ysize = 208
+    elif type == 4:
+        sprite.xoffset = -112
+        sprite.yoffset = -112
+        sprite.xsize = 240
+        sprite.ysize = 240
+
+    sprite.image = ImageCache['CageBlock%d' % type]
 
 def SizeHorizontalRope(sprite): # 440
     length = ord(sprite.spritedata[5])
