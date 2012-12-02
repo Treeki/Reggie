@@ -1225,6 +1225,16 @@ def InitRollingHill(sprite): # 212
     sprite.aux = AuxiliaryCircleOutline(sprite, realSize)
     return (0,0,16,16)
 
+def InitFreefallPlatform(sprite): #214
+    global ImageCache
+    if 'FreefallGH' not in ImageCache:
+        ImageCache['FreefallGH'] = QtGui.QPixmap('reggiedata/sprites/freefall_gh_platform.png')
+
+    sprite.customPaint = True
+    sprite.customPainter = PaintGenericObject
+    sprite.image = ImageCache['FreefallGH']
+    return (0,0,400,79)
+
 def InitSpringBlock(sprite): # 223
     sprite.dynamicSize = True
     sprite.dynSizer = SizeSpringBlock
@@ -2551,6 +2561,7 @@ Initialisers = {
     208: InitBlock,
     209: InitBlock,
     212: InitRollingHill,
+    214: InitFreefallPlatform,
     221: InitBlock,
     223: InitSpringBlock,
     224: InitJumboRay,
@@ -3730,13 +3741,13 @@ def SizeKingBill(sprite): #326 (0,-120,245,256)
         sprite.ysize = 256
     elif direction == 2:
         direction = 'D'
-        sprite.xoffset = -144
+        sprite.xoffset = -160
         sprite.yoffset = -227
         sprite.xsize = 256
         sprite.ysize = 245
     elif direction == 3:
         direction = 'U'
-        sprite.xoffset = -144
+        sprite.xoffset = -80
         sprite.yoffset = 0
         sprite.xsize = 256
         sprite.ysize = 245
